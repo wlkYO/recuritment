@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1, shrink-to-fit=no, maximum-scale=1.0, user-scalable=no">
+    <!-- <link rel="shortcut icon" href="favicon.ico" /> -->
+    <!-- Bootstrap CSS -->
+    <title>吧啦吧啦招聘网</title>
+
+    <link rel="stylesheet" href="css/base.css">
+    <link rel="stylesheet" href="css/home.css">
+    <link rel="stylesheet" href="css/common.css">
+    <link rel="stylesheet" href="css/header.css">
+    <link rel="stylesheet" href="css/registe.css">
+    <link rel="stylesheet" href="css/toastr.min.css">
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="./iconfont/iconfont.css">
+
+    <script type="text/javascript" src="js/jquery.min.js"></script>
+    <script src="./js/common.js"></script>
+    <script src="./js/jquery-3.3.1.min.js"></script>
+    <script src="./js/toastr.min.js"></script>
+    <script src="./js/bootstrap.min.js"></script>
+    <script src="./js/jsrender.js"></script>
+</head>
+
+<body>
+    <div id="header"></div>
+    <div class="main-body d-flex align-items-center">
+        <div class="mt-2 form-body">
+            <div class="form-group">
+                <ul class="nav nav-tabs d-flex justify-content-center" id="zwTab" role="tablist">
+                    <li class="nav-item">
+                        <a class="nav-link active" id="psw-tab" data-toggle="tab" href="#psw" role="tab"
+                            aria-controls="psw" aria-selected="true">
+                            <span class="tit">密码登录</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="yzm-tab" data-toggle="tab" href="#yzm" role="tab" aria-controls="yzm"
+                            aria-selected="true">
+                            <span class="tit">验证码登录</span>
+                        </a>
+                    </li>
+                </ul>
+                <div class="tab-content" id="zwTabContent">
+                    <form data-toggle="validator" role="form" onsubmit="return false" class="tab-pane fade show active"
+                        id="psw" role="tabpanel" aria-labelledby="psw-tab">
+
+                        <div class="form-group">
+                            <label for="inputEmail1" class="control-label">邮箱</label>
+                            <input type="email" class="form-control" id="inputEmail1"
+                                data-error="Bruh, that email address is invalid" required placeholder="输入邮箱">
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleInputPassword1">密码</label>
+                            <input type="password" id='password' class="form-control" id="exampleInputPassword1"
+                                placeholder='输入密码' required>
+                        </div>
+                        <!-- 拖动滑块验证 -->
+                        <div class="form-group">
+                            <div class="drag" id="drag1">
+                                <div class="drag_bg" id="drag_bg1"></div>
+                                <div class="drag_text" id='drag_text1'>拖动滑块验证</div>
+                                <div class="handler handler_bg" id='handler1'></div>
+                            </div>
+                            <small id="slider1" class="form-text d-none" style="color:red !important">请滑动滑块验证</small>
+                        </div>
+                        <button type="submit" class="registe btn btn-info w-100" onclick="login(1)">登录</button>
+                        <div class="form-group mt-3">
+                            <span class="">没有账号？<a class="" href="./registe.html#find">立即注册</a></span>
+                        </div>
+                    </form>
+                    <form data-toggle="validator" role="form" onsubmit="return false" class="tab-pane fade" id="yzm"
+                        role="tabpanel" aria-labelledby="yzm-tab">
+                        <div class="form-group">
+                            <label for="inputEmail2" class="control-label">邮箱</label>
+                            <input type="email" class="form-control" id="inputEmail2"
+                                data-error="Bruh, that email address is invalid" required placeholder="输入邮箱">
+                            <small id="emailTips" class="form-text d-none" style="color:red !important"></small>
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleInputPassword1">验证码</label>
+                            <div class="d-flex align-items-center justify-content-start"
+                                style="border: 1px solid #ced4da">
+                                <input type="text" class="form-control code" id="code"
+                                    style="border: 0 !important;width:68% !important" placeholder="邮箱验证码" required>|
+                                <a class="getcode d-block" id="getcode"
+                                    style="padding: 0 4px 0 6px;color: #5dd5c8;cursor: pointer;"
+                                    onClick="getCode()">获取验证码</a>
+                                <a class="getcode d-none" id="dynccode"
+                                    style="padding: 0 4px 0 6px;color: #6fbbb3;cursor: pointer;"
+                                    onClick="return false"></a>
+                            </div>
+                        </div>
+
+                        <!-- 拖动滑块验证 -->
+                        <div class="form-group">
+                            <div class="drag" id="drag2">
+                                <div class="drag_bg" id="drag_bg2"></div>
+                                <div class="drag_text" id='drag_text2'>拖动滑块验证</div>
+                                <div class="handler handler_bg" id='handler2'></div>
+                            </div>
+                            <small id="slider2" class="form-text d-none" style="color:red !important">请滑动滑块验证</small>
+                        </div>
+                        <button type="submit" class="registe btn btn-info w-100" onclick="login(2)">登录</button>
+                        <div class="form-group mt-3">
+                            <span class="">没有账号？<a class="" href="./registe.html#find">立即注册</a></span>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    </div>
+    <!-- <div id="footer"></div> -->
+    <script>
+        $(function () {
+            //登录验证方式切换
+            $('.nav-link').click(function () {
+                if ($(this).attr('class') == 'nav-link active') {
+                    return;
+                }
+                $("#inputEmail1").val('');
+                $("#inputEmail2").val('');
+                $("#password").val('');
+                $(".code").val('');
+            })
+        });
+        //  请求后台数据-获取验证码
+        function getCode() {
+            //   验证邮箱格式
+            if (!isDataValid($('#inputEmail2').val())) {
+                $('#emailHelp').removeClass('d-block').addClass('d-none');
+                $('#emailTips').removeClass('d-none').addClass('d-block');
+                $('#emailTips').text('请先输入邮箱！');
+                $('#inputEmail2').addClass('bdDanger');
+                return;
+            } else {
+                var reg = /^([a-zA-Z]|[0-9])(\w|\-)+@[a-zA-Z0-9]+\.([a-zA-Z]{2,4})$/;
+                if (reg.test($('#inputEmail2').val())) {
+                    $('#emailHelp').removeClass('d-none').addClass('d-block');
+                    $('#emailTips').removeClass('d-block').addClass('d-none');
+                    $('#inputEmail2').removeClass('bdDanger');
+                } else {
+                    $('#emailHelp').removeClass('d-block').addClass('d-none');
+                    $('#emailTips').removeClass('d-none').addClass('d-block');
+                    $('#emailTips').text('邮箱格式有误！');
+                    $('#inputEmail2').addClass('bdDanger');
+                    return;
+                }
+            }
+
+            let url = httpUrl + '/admin/Webloginc/sendmail';
+            let params = {
+                "email": $('#inputEmail2').val(),
+                "type": 2 //2=登录
+            };
+
+            // ajax请求
+            $.ajax({
+                type: 'POST', //请求方式
+                url: url, //请求路径 
+                data: JSON.stringify(params), //参数
+                dataType: 'JSON',
+                contentType: 'application/x-www-form-urlencoded;charset=utf-8',
+                beforeSend: function (XMLHttpRequest) {},
+                success: function (data) { //成功
+                    if (data.resultcode >= 0) {
+                        // 验证码倒计时
+                        var myVar = setInterval(myTimer, 1000);
+                        var d = 59; //一分钟倒计时
+
+                        function myTimer() {
+                            if (d > 0) {
+                                $("#getcode").removeClass('d-block').addClass('d-none');
+                                $("#dynccode").removeClass('d-none').addClass('d-block');
+                                $("#dynccode").text(d + 's后获取');
+                                d--;
+                            } else if (d === 0) {
+                                $("#dynccode").removeClass('d-block').addClass('d-none');
+                                $("#getcode").removeClass('d-none').addClass('d-block');
+                                $("#getcode").text('重新获取');
+                                clearInterval(myVar);
+                            }
+                        }
+                    } else {
+                        toastr.error(data.resultmsg)
+                    }
+                },
+                error: function (obj, msg, e) { //异常
+                    toastr.error(data.msg)
+                }
+            });
+        }
+
+        //登录
+        function login(i) {
+            if (!isDataValid($('#inputEmail' + i).val()) || i == 1 ? !isDataValid($('#password').val()) : !isDataValid(
+                    $('.code').val())) {
+                return;
+            } else {
+                if ($('#drag_text' + i).text() == '拖动滑块验证') {
+                    $('#slider' + i).removeClass('d-none').addClass('d-block');
+                    return;
+                } else {
+                    $('#slider' + i).removeClass('d-block').addClass('d-none');
+                }
+                //}
+            }
+            let url;
+            let params = {};
+            if (i == 1) {
+                url = httpUrl + '/admin/Webloginc/login';
+                params = {
+                    "password": $('#password').val(),
+                    "email": $('#inputEmail1').val()
+                }
+            } else {
+                url = httpUrl + '/admin/Webloginc/yanzhengLogin';
+                params = {
+                    "email": $('#inputEmail2').val(),
+                    "Verification_code": $('.code').val()
+                };
+            }
+            $.ajax({
+                type: 'POST', //请求方式
+                url: url, //请求路径 
+                data: JSON.stringify(params), //参数
+                dataType: 'JSON',
+                contentType: 'application/x-www-form-urlencoded;charset=utf-8',
+                beforeSend: function (XMLHttpRequest) {},
+                success: function (data) {
+                    if (data.resultcode >= 0) { // 登录成功
+                        sessionStorage.setItem('token', JSON.stringify(data.data.token));
+                        sessionStorage.setItem('role', JSON.stringify(data.data.role));
+                        sessionStorage.setItem('username', JSON.stringify(data.data.username));
+                        sessionStorage.setItem('company_id', JSON.stringify(data.data.company_id));
+                        sessionStorage.setItem('header_img', JSON.stringify(data.data.header_img));
+                        sessionStorage.setItem('nickname', JSON.stringify(data.data.nickname));
+                        sessionStorage.setItem('sex', JSON.stringify(data.data.sex));
+                        sessionStorage.setItem('is_upload', JSON.stringify(data.data.is_upload));
+                        setTimeout(() => {
+                            if (data.data.role == 1) {
+                                window.location.href = document.URL.substring(0, document.URL
+                                    .indexOf(
+                                        '')) + 'admin.html';
+                                return;
+                            }
+                            window.location.href = document.URL.substring(0, document.URL.indexOf(
+                                '')) + 'index.html';
+                        }, 1000)
+                    } else {
+                        toastr.error(data.resultmsg)
+                    }
+                },
+                error: function (obj, msg, e) { //异常
+                    toastr.error(data.msg)
+                }
+            });
+        }
+    </script>
+</body>
+
+</html>

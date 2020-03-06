@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1, shrink-to-fit=no, maximum-scale=1.0, user-scalable=no">
+    <!-- <link rel="shortcut icon" href="favicon.ico" /> -->
+    <!-- Bootstrap CSS -->
+    <title>吧啦吧啦招聘网</title>
+
+    <link rel="stylesheet" href="css/header.css">
+    <link rel="stylesheet" href="css/footer.css">
+    <link rel="stylesheet" href="css/base.css">
+    <link rel="stylesheet" href="css/home.css">
+    <link rel="stylesheet" href="css/registe.css">
+    <link rel="stylesheet" href="css/common.css">
+    <link rel="stylesheet" href="css/toastr.min.css">
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="./iconfont/iconfont.css">
+</head>
+
+<body>
+    <div id="header"></div>
+    <div class="main-body p-5">
+        <form data-toggle="validator" role="form" onsubmit="return false" class="tab-pane fade show" id="find"
+            role="tabpanel" aria-labelledby="find-tab">
+            <div class="pl-5 py-2">
+                <h5 class='postJob_title'></h5>
+            </div>
+            <div class="row px-5">
+                <div class="form-group col-6">
+                    <label for="inputEmail" class="control-label typeTit">所属职类</label>
+                    <select class="form-control" id="zyType">
+                        <option value="">选择职类</option>
+                    </select>
+                </div>
+                <div class="form-group col-6">
+                    <label for="inputEmail" class="control-label">地址</label>
+                    <fieldset>
+                        <label for="addr-show02" class="w-100">
+                            <input type="text" class="form-control" id="addr-show02" style="background-color: #fff;"
+                                placeholder="省市区/县" required>
+                        </label>
+                        <div id="addr">
+                            <div id="addr-choice">
+                                <ul id="title-wrap">
+                                    <li value="0">省份</li>
+                                    <li value="1">城市</li>
+                                    <li value="2">县区</li>
+                                </ul>
+                                <div id="show-panel">
+                                    <ul id="addr-wrap">
+                                    </ul>
+                                </div>
+                            </div>
+                            <button type="button" class="btn met2 ml-2 mb-2">确定</button>
+                        </div>
+
+                    </fieldset>
+                    <input type="text" class="form-control" id="addr-show03" style="width: 50%;" placeholder="填写公司详细地址"
+                        required>
+                </div>
+                <div class="form-group col-6">
+                    <label for="inputEmail" class="control-label">职称</label>
+                    <input type="text" class="form-control" id="name" placeholder="填写职位名称(全称)" required>
+                </div>
+                <div class="form-group col-6">
+                    <label for="inputEmail" class="control-label">工作经验</label>
+                    <select class="form-control" id="experience">
+                        <option value="0">不限</option>
+                        <option value="1">在校生</option>
+                        <option value="2">应届生</option>
+                        <option value="3">一年以内</option>
+                        <option value="4">1-3年</option>
+                        <option value="5">3-5年</option>
+                        <option value="6">5-10年</option>
+                        <option value="7">10年以上</option>
+                    </select>
+                </div>
+                <div class="form-group col-6">
+                    <label for="inputEmail" class="control-label">薪资范围</label>
+                    <select class="form-control" id="price">
+                        <option value="0">不限</option>
+                        <option value="1">3k以下</option>
+                        <option value="2">3-5k</option>
+                        <option value="3">5-10k</option>
+                        <option value="4">10-15k</option>
+                        <option value="5">15-20k</option>
+                        <option value="6">20-30k</option>
+                        <option value="7">30-50k</option>
+                        <option value="8">50k以上</option>
+                    </select>
+                </div>
+                <div class="form-group col-6">
+                    <label for="inputEmail" class="control-label">学历</label>
+                    <select class="form-control" id="education">
+                        <option value="0">不限</option>
+                        <option value="1">初中及以下</option>
+                        <option value="2">中专/中技</option>
+                        <option value="3">高中</option>
+                        <option value="4">大专</option>
+                        <option value="5">本科</option>
+                        <option value="6">硕士</option>
+                        <option value="7">博士</option>
+                    </select>
+                </div>
+                <div class="form-group col-12">
+                    <label for="inputEmail" class="control-label fuliTit">福利待遇</label>
+                    <div class="d-flex justify-content-start align-items-center flex-row">
+                        <label class="ml-2"><input name="checkAll" type="checkbox" value="全选/全不选" id="checkAll" />全选/全不选
+                        </label>
+                        <div class="checkList">
+                            <label class="col-2"><input name="fuli" type="checkbox" value="五险一金" class="fuli" />五险一金
+                            </label>
+                            <label class="col-2"><input name="fuli" type="checkbox" value="补充医疗保险" class="fuli" />补充医疗保险
+                            </label>
+                            <label class="col-2"><input name="fuli" type="checkbox" value="定期体检" class="fuli" />定期体检
+                            </label>
+                            <label class="col-2"><input name="fuli" type="checkbox" value="年终奖" class="fuli" />年终奖
+                            </label>
+                            <label class="col-2"><input name="fuli" type="checkbox" value="带薪年假" class="fuli" />带薪年假
+                            </label>
+                            <label class="col-2"><input name="fuli" type="checkbox" value="员工旅游" class="fuli" />员工旅游
+                            </label>
+                            <label class="col-2"><input name="fuli" type="checkbox" value="免费班车" class="fuli" />免费班车
+                            </label>
+                            <label class="col-2"><input name="fuli" type="checkbox" value="餐补" class="fuli" />餐补
+                            </label>
+                            <label class="col-2"><input name="fuli" type="checkbox" value="节日福利" class="fuli" />节日福利
+                            </label>
+                            <label class="col-2"><input name="fuli" type="checkbox" value="零食下午茶" class="fuli" />零食下午茶
+                            </label>
+                            <label class="col-2"><input name="fuli" type="checkbox" value="其他" class="fuli" />其他
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group col-12">
+                    <label for="inputEmail" class="control-label">职位描述</label>
+                    <textarea rows="10" class="form-control" id="zperSign" placeholder="职位描述" required></textarea>
+                </div>
+            </div>
+            <button type="submit" class="submit btn btn-info ml-5" onclick="onSubmit()">确认发布</button>
+        </form>
+    </div>
+    <div id="footer"></div>
+
+    <script type="text/javascript" src="js/jquery.min.js"></script>
+    <script src="./js/common.js"></script>
+    <script src="./js/jquery-3.3.1.min.js"></script>
+    <script src="./js/toastr.min.js"></script>
+    <script src="./js/bootstrap.min.js"></script>
+    <script src="./js/jsrender.js"></script>
+    <script src="./js/header.js"></script>
+    <script src="./js/city.js"></script>
+    <script src="./js/methodCity.js"></script>
+    <script type="text/javascript">
+        var id;
+        $(function () {
+            getClassData();
+            //根据情况设置 发布职位还是编辑职位
+            const baseUrl = document.URL;
+            if (baseUrl.indexOf('postJob.html#upd') > -1) { //职位编辑
+                $('.postJob_title').html('编辑职位')
+            } else { //职位发布
+                $('.postJob_title').html('发布职位.职位详情')
+            }
+
+            $("#checkAll").click(function () { //全选框按钮点击事件
+                var flg = this.checked;
+                $('.checkList input[type=checkbox]').each(function () {
+                    this.checked = flg;
+                });
+            });
+            $(document).on("click", ".fuli", function () { //复选框点击事件
+                //判断当前选择中的元素是否等于总复选框个数
+                var flag = $('.checkList input[type=checkbox]:checked').length == $(".fuli").length;
+                $("#checkAll").prop("checked", flag);
+            });
+        })
+        //获取待编辑的数据
+        function getUpdList(e) {
+            let url = httpUrl + '/admin/Web_Userc/positionDetail/id/' + e;
+            $.ajax({
+                type: 'get', //请求方式
+                url: url, //请求路径 
+                // data: params,     //参数
+                dataType: 'json',
+                contentType: 'application/x-www-form-urlencoded;charset=utf-8',
+                beforeSend: function (XMLHttpRequest) {},
+                success: function (data) { //成功
+                    if (data.resultcode >= 0) {
+                        if (data.data && data.data.length > 0) {
+                            var newlists = data.data[0];
+                            id = newlists.id;
+                            //1.所属职类
+                            var zyTypes = $("#zyType").find("option"); //获取下拉框值
+                            for (var j = 0; j < zyTypes.length; j++) {
+                                $(zyTypes[j]).val() == newlists.industry ? $(zyTypes[j]).prop("selected",
+                                    "selected") : '';
+                            }
+                            //2.大地址
+                            $('#addr-show02').val(newlists['address']);
+                            //3.详细地址
+                            $('#addr-show03').val(newlists['address_detail']);
+                            //4.职称
+                            $('#name').val(newlists['name']);
+                            //5.工作经验
+                            var expes = $("#experience").find("option"); //获取下拉框的值
+                            for (var j = 0; j < expes.length; j++) {
+                                $(expes[j]).text() == newlists['experience'] ? $(expes[j]).prop("selected",
+                                    "selected") : '';
+                            }
+                            //6.薪资范围
+                            var prices = $("#price").find("option"); //获取下拉框的值
+                            for (var j = 0; j < prices.length; j++) {
+                                $(prices[j]).text() == newlists['wages'] ? $(prices[j]).prop("selected",
+                                    "selected") : '';
+                            }
+                            //7.学历
+                            var adcs = $("#education").find("option"); //获取下拉框的值
+                            for (var j = 0; j < adcs.length; j++) {
+                                $(adcs[j]).text() == newlists['xueli'] ? $(adcs[j]).prop("selected",
+                                    "selected") : '';
+                            }
+                            //8.福利待遇
+                            // fuliArr,
+                            var a = $('.checkList input[type=checkbox]');
+                            var b = newlists['welfare'];
+                            for (var j = 0; j < b.length; j++) {
+                                for (var i = 0; i < a.length; i++) {
+                                    a[i].value == b[j] ? a[i].checked = true : '';
+                                }
+                            }
+                            //9.职位描述
+                            $('#zperSign').val(newlists['position_detail'])
+                        } else {
+                            toastr.error('网络异常')
+                        }
+                    }
+                },
+                error: function (obj, msg, e) { //异常
+                    toastr.error('网络异常')
+                }
+            })
+        }
+
+        // 职类
+        function getClassData() {
+            let url = httpUrl + '/admin/Positionc/getjobType';
+            $.ajax({
+                type: 'get', //请求方式
+                url: url, //请求路径 
+                dataType: 'json',
+                contentType: 'application/x-www-form-urlencoded;charset=utf-8',
+                beforeSend: function (XMLHttpRequest) {},
+                success: function (data) { //成功
+                    if (data.resultcode >= 0) {
+                        if (data.data && data.data.length > 0) {
+                            var Classlists = [];
+                            data.data.map((item, i) => {
+                                if (item.chldren.length > 0) {
+                                    item.chldren.map((it, i) => {
+                                        Classlists.push(it.typename)
+                                    })
+                                }
+                            })
+                            Classlists.unshift('选择职类')
+                            var template = $.templates('#theClassList');
+                            $('#zyType').html(template.render(Classlists));
+
+                            if (document.URL.indexOf('postJob.html#upd') > -1) { //职位编辑
+                                getUpdList(JSON.parse(sessionStorage.getItem('updId')));
+                            }
+                        } else {}
+                    }
+                },
+                error: function (obj, msg, e) { //异常
+                    toastr.error('网络异常,职类获取失败！')
+                }
+            });
+        }
+
+        function onSubmit() {
+            //$('input:checkbox:checked') 等同于 $('input[type=checkbox]:checked')
+            //表示选择被选中的checkbox
+            var fuliArr = [];
+            $.each($('.checkList input[type=checkbox]:checked'), function () {
+                fuliArr.push($(this).val());
+            });
+            if (!isDataValid($('#addr-show02').val()) || !isDataValid($('#addr-show03').val()) || !isDataValid($(
+                    '#name').val()) || !isDataValid($('#zperSign')
+                    .val())) {
+                return;
+            }
+            if ($("#zyType option:selected").text() == '选择职类') {
+                $('.typeTit').addClass('c-danger');
+                $('#zyType').addClass('c-danger-border');
+                return;
+            }
+            if ($("#zyType option:selected").text() !== '选择职类') {
+                $('.typeTit').removeClass('c-danger');
+                $('#zyType').removeClass('c-danger-border');
+            }
+            if ($('.checkList input[type=checkbox]:checked').length == 0) {
+                $('.fuliTit').addClass('c-danger');
+                return;
+            }
+            if ($('.checkList input[type=checkbox]:checked').length > 0) {
+                $('.fuliTit').removeClass('c-danger');
+            }
+            var url = httpUrl + '/admin/Web_Userc/releasePosition/token/' + getToken();
+            var params = {
+                "industry": $("#zyType option:selected").text(),
+                "address": $('#addr-show02').val(),
+                "address_detail": $('#addr-show03').val(),
+                "name": $('#name').val(),
+                "experience": $("#experience option:selected").text(),
+                "wages": $("#price option:selected").text(),
+                "xueli": $("#education option:selected").text(),
+                "welfare": fuliArr,
+                "position_detail": $('#zperSign').val()
+            };
+            if (document.URL.indexOf('postJob.html#upd') > -1) { //职位编辑
+                params['id'] = id;
+            }
+            $.ajax({
+                type: 'POST', //请求方式
+                url: url, //请求路径 
+                data: JSON.stringify(params), //参数
+                dataType: 'JSON',
+                contentType: 'application/x-www-form-urlencoded;charset=utf-8',
+                beforeSend: function (XMLHttpRequest) {},
+                success: function (data) {
+                    if (data.resultcode >= 0) { // 成功
+                        toastr.success(data.resultmsg);
+                        setTimeout(() => {
+                            if (document.URL.indexOf('postJob.html#upd') > -1) { //职位编辑
+                                window.location.href = document.URL.substring(0, document.URL
+                                    .indexOf('')) + 'manage_zp.html#sc';
+                            } else {
+                                window.location.href = document.URL.substring(0, document.URL
+                                    .indexOf('')) + 'index.html';
+                            }
+                        }, 500)
+                    } else if (data.resultcode == -2) {
+                        reLogin(data);
+                    } else {
+                        toastr.error(data.resultmsg)
+                    }
+                },
+                error: function (obj, msg, e) { //异常
+                    toastr.error(data.msg)
+                }
+            });
+        }
+    </script>
+    <script id='theClassList' type="text/x-jsrender">
+        <option value="{{: #data}}">{{: #data}}</option>
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1, shrink-to-fit=no, maximum-scale=1.0, user-scalable=no">
+    <!-- <link rel="shortcut icon" href="favicon.ico" /> -->
+    <!-- Bootstrap CSS -->
+    <title>吧啦吧啦招聘网</title>
+
+    <link rel="stylesheet" href="css/base.css">
+    <link rel="stylesheet" href="css/home.css">
+    <link rel="stylesheet" href="css/common.css">
+    <link rel="stylesheet" href="css/header.css">
+    <link rel="stylesheet" href="css/registe.css">
+    <link rel="stylesheet" href="css/registe.css">
+    <link rel="stylesheet" href="css/toastr.min.css">
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="./iconfont/iconfont.css">
+
+    <script type="text/javascript" src="js/jquery.min.js"></script>
+    <script src="./js/common.js"></script>
+    <script src="./js/jquery-3.3.1.min.js"></script>
+    <script src="./js/toastr.min.js"></script>
+    <script src="./js/bootstrap.min.js"></script>
+    <script src="./js/jsrender.js"></script>
+</head>
+
+<body>
+    <div id="header"></div>
+    <div class="main-body d-flex align-items-center">
+        <div class="mt-2 form-body">
+            <div class="form-group">
+                <ul class="nav nav-tabs d-flex justify-content-center" id="zwTab" role="tablist">
+                    <li class="nav-item">
+                        <a class="nav-link active" id="find-tab" data-toggle="tab" href="#find" role="tab"
+                            aria-controls="find" aria-selected="true">
+                            <span class="tit">我要求职</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="zp-tab" data-toggle="tab" href="#zp" role="tab" aria-controls="zp"
+                            aria-selected="true">
+                            <span class="tit">我要招聘</span>
+                        </a>
+                    </li>
+                </ul>
+                <div class="tab-content" id="zwTabContent">
+                    <form data-toggle="validator" role="form" onsubmit="return false" class="tab-pane fade"
+                        id="find" role="tabpanel" aria-labelledby="find-tab">
+                        <div class="form-group">
+                            <label for="inputEmail1" class="control-label">个人邮箱</label>
+                            <input type="email" class="form-control" id="inputEmail1"
+                                data-error="Bruh, that email address is invalid" required placeholder="请填写个人电子邮箱">
+                            <small id="emailHelp1" class="form-text text-muted d-block">我们永远不会和任何人分享你的电子邮件。</small>
+                            <small id="emailTips1" class="form-text d-none" style="color:red !important"></small>
+                        </div>
+                        <div class="form-group">
+                            <label for="password1">密码</label>
+                            <input type="password" id='password1' class="form-control" placeholder='不少于6位长度的密码'
+                                required>
+                            <div class="intension" id='intension1'>
+                                <div class="d-none">弱</div>
+                                <div class="d-none">中</div>
+                                <div class="d-none">强</div>
+                            </div>
+                            <small id="pswTips1" class="form-text d-none" style="color:red"></small>
+                        </div>
+                        <div class="form-group">
+                            <label for="yzm1">验证码</label>
+                            <div class="d-flex align-items-center justify-content-start"
+                                style="border: 1px solid #ced4da">
+                                <input type="text" class="form-control code1"
+                                    style="border: 0 !important;width:68% !important" placeholder="邮箱验证码" required>|
+                                <a class="getcode d-block" id="getcode1"
+                                    style="padding: 0 4px 0 6px;color: #5dd5c8;cursor: pointer;"
+                                    onClick="getCode(1)">获取验证码</a>
+                                <a class="getcode d-none" id="dynccode1"
+                                    style="padding: 0 4px 0 6px;color: #6fbbb3;cursor: pointer;"
+                                    onClick="return false"></a>
+                            </div>
+                        </div>
+
+                        <!-- 拖动滑块1验证 -->
+                        <div class="form-group">
+                            <div class="drag" id="drag1">
+                                <div class="drag_bg" id="drag_bg1"></div>
+                                <div class="drag_text" id="drag_text1">拖动滑块验证</div>
+                                <div class="handler handler_bg" id="handler1"></div>
+                            </div>
+                            <small id="slider1" class="form-text d-none" style="color:red !important">请滑动滑块验证</small>
+                        </div>
+                        <div class="form-group">
+                            <button type="submit" class="registe btn btn-info w-100" onclick="registe(1)">注册</button>
+                        </div>
+                    </form>
+                    <form data-toggle="validator" role="form" onsubmit="return false" class="tab-pane fade" id="zp"
+                        role="tabpanel" aria-labelledby="zp-tab">
+                        <div class="form-group">
+                            <label for="inputEmail2" class="control-label">企业邮箱</label>
+                            <input type="email" class="form-control" id="inputEmail2"
+                                data-error="Bruh, that email address is invalid" required placeholder="请填写企业电子邮箱">
+                            <small id="emailHelp2" class="form-text text-muted d-block">我们永远不会和任何人分享你的电子邮件。</small>
+                            <small id="emailTips2" class="form-text d-none" style="color:red !important"></small>
+                        </div>
+                        <div class="form-group">
+                            <label for="password2">密码</label>
+                            <input type="password" id='password2' class="form-control" placeholder='不少于6位长度的密码'
+                                required>
+                            <div class="intension" id='intension2'>
+                                <div class="d-none">弱</div>
+                                <div class="d-none">中</div>
+                                <div class="d-none">强</div>
+                            </div>
+                            <small id="pswTips2" class="form-text d-none" style="color:red"></small>
+                        </div>
+                        <div class="form-group">
+                            <label for="yzm2">验证码</label>
+                            <div class="d-flex align-items-center justify-content-start"
+                                style="border: 1px solid #ced4da">
+                                <input type="text" class="form-control code2"
+                                    style="border: 0 !important;width:68% !important" placeholder="邮箱验证码" required>|
+                                <a class="getcode d-block" id="getcode2"
+                                    style="padding: 0 4px 0 6px;color: #5dd5c8;cursor: pointer;"
+                                    onClick="getCode(2)">获取验证码</a>
+                                <a class="getcode d-none" id="dynccode2"
+                                    style="padding: 0 4px 0 6px;color: #6fbbb3;cursor: pointer;"
+                                    onClick="return false"></a>
+                            </div>
+                        </div>
+
+                        <!-- 拖动滑块2验证 -->
+                        <div class="form-group">
+                            <div class="drag" id="drag2">
+                                <div class="drag_bg" id="drag_bg2"></div>
+                                <div class="drag_text" id="drag_text2">拖动滑块验证</div>
+                                <div class="handler handler_bg" id="handler2"></div>
+                            </div>
+                            <small id="slider2" class="form-text d-none" style="color:red !important">请滑动滑块验证</small>
+                        </div>
+                        <button type="submit" class="registe btn btn-info w-100" onclick="registe(2)">注册</button>
+                    </form>
+                    <div class="form-group mt-3 d-flex justify-content-start">
+                        <span>已有账号,</span><a class="ml-2" href="./login.html">直接登录</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        $(function () {
+            const baseUrl = document.URL;
+            if (baseUrl.indexOf('registe.html#find') > -1) {
+                $('#find').addClass('show active');
+                $('#find-tab').addClass('active');
+                $('#zp').removeClass('show active');
+                $('#zp-tab').removeClass('active');
+            }
+            if (baseUrl.indexOf('registe.html#zp') > -1) {
+                $('#zp').addClass('show active');
+                $('#zp-tab').addClass('active');
+                $('#find').removeClass('show active');
+                $('#find-tab').removeClass('active');
+            }
+
+            var oPassword1 = document.getElementById("password1");
+            var oDiv1 = document.getElementById("intension1");
+            var nodes1 = oDiv1.getElementsByTagName("div");
+            var oPassword2 = document.getElementById("password2");
+            var oDiv2 = document.getElementById("intension2");
+            var nodes2 = oDiv2.getElementsByTagName("div");
+            // 验证密码1强度
+            oPassword1.onkeyup = function () {
+                var oValue = oPassword1.value;
+
+                for (var i = 0; i < nodes1.length; i++) {
+                    nodes1[i].className = '';
+                }
+                if (/[\u4E00-\u9FA5\uFE30-\uFFA0]/.test(oValue)) {
+                    for (var i = 0; i < nodes1.length; i++) {
+                        nodes1[i].className = 'd-none';
+                    }
+                    $('#pswTips1').removeClass('d-none').addClass('d-block');
+                    $('#pswTips1').text('检测到汉字！');
+                } else {
+                    $('#pswTips1').removeClass('d-block').addClass('d-none');
+                    if (/^\s*$/g.test(oValue) || oValue == null || oValue == "") {
+                        for (var i = 0; i < nodes1.length; i++) {
+                            nodes1[i].className = 'd-none';
+                        }
+                    } else if (/\d/.test(oValue) && /[a-z]/.test(oValue) && /[A-Z]/.test(oValue)) {
+                        nodes1[2].className = "active d-block";
+                    } else if (/^\d+$/.test(oValue) || /^[A-Z]+$/.test(oValue) || /^[a-z]+$/.test(oValue)) {
+                        nodes1[0].className = "danger d-block";
+                    } else {
+                        nodes1[1].className = "active d-block";
+                    }
+                }
+            }
+            // 验证密码2强度
+            oPassword2.onkeyup = function () {
+                var oValue = oPassword2.value;
+
+                for (var i = 0; i < nodes2.length; i++) {
+                    nodes2[i].className = '';
+                }
+                if (/[\u4E00-\u9FA5\uFE30-\uFFA0]/.test(oValue)) {
+                    for (var i = 0; i < nodes2.length; i++) {
+                        nodes2[i].className = 'd-none';
+                    }
+                    $('#pswTips2').removeClass('d-none').addClass('d-block');
+                    $('#pswTips2').text('检测到汉字！');
+                } else {
+                    $('#pswTips2').removeClass('d-block').addClass('d-none');
+                    if (/^\s*$/g.test(oValue) || oValue == null || oValue == "") {
+                        for (var i = 0; i < nodes2.length; i++) {
+                            nodes2[i].className = 'd-none';
+                        }
+                    } else if (/\d/.test(oValue) && /[a-z]/.test(oValue) && /[A-Z]/.test(oValue)) {
+                        nodes2[2].className = "active d-block";
+                    } else if (/^\d+$/.test(oValue) || /^[A-Z]+$/.test(oValue) || /^[a-z]+$/.test(oValue)) {
+                        nodes2[0].className = "danger d-block";
+                    } else {
+                        nodes2[1].className = "active d-block";
+                    }
+                }
+
+            }
+        });
+
+        //  请求后台数据-获取验证码
+        function getCode(e) {
+            //   验证邮箱格式
+            if (!isDataValid($('#inputEmail' + e).val())) {
+                $('#emailHelp' + e).removeClass('d-block').addClass('d-none');
+                $('#emailTips' + e).removeClass('d-none').addClass('d-block');
+                $('#emailTips' + e).text('请先输入邮箱！');
+                $('#inputEmail' + e).addClass('bdDanger');
+                return;
+            } else {
+                var reg = /^([a-zA-Z]|[0-9])(\w|\-)+@[a-zA-Z0-9]+\.([a-zA-Z]{2,4})$/;
+                if (reg.test($('#inputEmail' + e).val())) {
+                    $('#emailHelp' + e).removeClass('d-none').addClass('d-block');
+                    $('#emailTips' + e).removeClass('d-block').addClass('d-none');
+                    $('#inputEmail' + e).removeClass('bdDanger');
+                } else {
+                    $('#emailHelp' + e).removeClass('d-block').addClass('d-none');
+                    $('#emailTips' + e).removeClass('d-none').addClass('d-block');
+                    $('#emailTips' + e).text('邮箱格式有误！');
+                    $('#inputEmail' + e).addClass('bdDanger');
+                    return;
+                }
+            }
+
+            let url = httpUrl + '/admin/Webloginc/sendmail';
+            let params = {
+                "email": $('#inputEmail' + e).val(),
+                "type": 1  //1=注册
+            };
+
+            // ajax请求
+            $.ajax({
+                type: 'POST', //请求方式
+                url: url, //请求路径 
+                data: JSON.stringify(params), //参数
+                dataType: 'JSON',
+                contentType: 'application/x-www-form-urlencoded;charset=utf-8',
+                beforeSend: function (XMLHttpRequest) {},
+                success: function (data) { //成功
+                    if (data.resultcode >= 0) {
+                        // 验证码倒计时
+                        var myVar = setInterval(myTimer, 1000);
+                        var d = 59; //一分钟倒计时
+
+                        function myTimer() {
+                            if (d > 0) {
+                                $("#getcode" + e).removeClass('d-block').addClass('d-none');
+                                $("#dynccode" + e).removeClass('d-none').addClass('d-block');
+                                $("#dynccode" + e).text(d + 's后获取');
+                                d--;
+                            } else if (d === 0) {
+                                $("#dynccode" + e).removeClass('d-block').addClass('d-none');
+                                $("#getcode" + e).removeClass('d-none').addClass('d-block');
+                                $("#getcode" + e).text('重新获取');
+                                clearInterval(myVar);
+                            }
+                        }
+                    } else {
+                        toastr.error(data.resultmsg)
+                    }
+                },
+                error: function (obj, msg, e) { //异常
+                    toastr.error(data.msg)
+                }
+            });
+        }
+
+        //注册
+        function registe(i) {
+            var val = $('#password' + i).val();
+            if (!isDataValid($('#inputEmail' + i).val()) || !isDataValid(val) || !isDataValid($('.code' + i).val())) {
+                return;
+            }
+            if (val == '') {
+                $('#pswTips' + i).removeClass('d-block').addClass('d-none');
+            }
+            if (/[\u4E00-\u9FA5\uFE30-\uFFA0]/.test(val)) {
+                $('#pswTips' + i).removeClass('d-none').addClass('d-block');
+                $('#pswTips' + i).text('检测到汉字！');
+                return;
+            }
+            if (val !== '' && (/^\d+$/.test(val) || /^[A-Z]+$/.test(val) || /^[a-z]+$/.test(val))) {
+                $('#pswTips' + i).removeClass('d-none').addClass('d-block');
+                $('#pswTips' + i).text('密码强度过低！');
+                return;
+            }
+            if (val !== '' && val.indexOf(' ') !== -1) {
+                $('#pswTips' + i).removeClass('d-none').addClass('d-block');
+                $('#pswTips' + i).text('密码不能填入空格！');
+                return;
+            }
+            if (val !== '' && val.length < 6) {
+                $('#pswTips' + i).removeClass('d-none').addClass('d-block');
+                $('#pswTips' + i).text('密码长度不能低于六位！');
+                return;
+            } else {
+                $('#pswTips' + i).removeClass('d-block').addClass('d-none');
+                if ($('#drag_text' + i).text() == '拖动滑块验证') {
+                    $('#slider' + i).removeClass('d-none').addClass('d-block');
+                    return;
+                } else {
+                    $('#slider' + i).removeClass('d-block').addClass('d-none');
+                }
+            }
+            let url = httpUrl + '/admin/Webloginc/register';
+            let params = {};
+            if (i == 1) {
+                params = {
+                    "isSon": 1,
+                    "password": $('#password' + i).val(),
+                    "email": $('#inputEmail' + i).val(),
+                    "Verification_code": $('.code' + i).val()
+                };
+            } else {
+                params = {
+                    "isSon": 0,
+                    "password": $('#password' + i).val(),
+                    "email": $('#inputEmail' + i).val(),
+                    "Verification_code": $('.code' + i).val()
+                };
+            }
+            $.ajax({
+                type: 'POST', //请求方式
+                url: url, //请求路径 
+                data: JSON.stringify(params), //参数
+                dataType: 'JSON',
+                contentType: 'application/x-www-form-urlencoded;charset=utf-8',
+                beforeSend: function (XMLHttpRequest) {},
+                success: function (data) {
+                    if (data.resultcode >= 0) { // 注册成功
+                        toastr.success('注册成功');
+                        setTimeout(() => {
+                            window.location.href = document.URL.substring(0, document.URL.indexOf(
+                                    'rigiste.html')) +
+                                'login.html';
+                        }, 1000)
+
+                    } else {
+                        toastr.error(data.resultmsg)
+                    }
+                },
+                error: function (obj, msg, e) { //异常
+                    toastr.error(data.msg)
+                }
+            });
+        }
+    </script>
+</body>
+
+</html>

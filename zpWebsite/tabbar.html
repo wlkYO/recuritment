@@ -1,0 +1,140 @@
+<div class="tab_bar d-flex flex-row">
+    <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+        <a class="nav-link" id="v-pills-profile-tab" data-toggle="pill" href="#v-pills-profile" role="tab"
+            aria-controls="v-pills-profile" aria-selected="false">
+            <i class="iconfont iconshoucang1">
+            </i>
+            <p class="one">感兴趣</p>
+        </a>
+        <a class="nav-link" id="v-pills-messages-tab" data-toggle="pill" href="#v-pills-messages" role="tab"
+            aria-controls="v-pills-messages" aria-selected="false">
+            <i class="iconfont icongoutong">
+            </i>
+            <p class="two">留言过</p>
+        </a>
+        <a class="nav-link" id="v-pills-toudi-tab" data-toggle="pill" href="#v-pills-toudi" role="tab"
+            aria-controls="v-pills-toudi" aria-selected="false">
+            <i class="iconfont iconfasong">
+            </i>
+            <p class="three">已投递</p>
+        </a>
+    </div>
+
+    <div class="tab-content" id="v-pills-tabContent">
+        <div class="tab-pane fade" id="v-pills-profile" role="tabpanel" aria-labelledby="v-pills-profile-tab">
+            <div class="job-sider">
+                <div class="promotion-job">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <h3>我的收藏</h3>
+                        <a href="./manage.html#sc">
+                            全部<i class="iconfont iconxiangyou"></i>
+                        </a>
+                    </div>
+                    <ul class="mysc">
+
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="tab-pane fade" id="v-pills-messages" role="tabpanel" aria-labelledby="v-pills-messages-tab">
+            <div class="job-sider">
+                <div class="promotion-job">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <h3>留言过</h3>
+                        <a href="./manage.html#ly">
+                            全部<i class="iconfont iconxiangyou"></i>
+                        </a>
+                    </div>
+                    <ul class="myly">
+                       
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="tab-pane fade" id="v-pills-toudi" role="tabpanel" aria-labelledby="v-pills-toudi-tab">
+            <div class="job-sider">
+                <div class="promotion-job">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <h3>我的投递</h3>
+                        <a href="./manage.html#td">
+                            全部<i class="iconfont iconxiangyou"></i>
+                        </a>
+                    </div>
+                    <ul class="mytd">
+
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="./js/jsrender.js"></script>
+<script id='myscList' type="text/x-jsrender">
+    {{if list.length > 0}}
+        {{for list.slice(0, 6)}}
+            <li>
+                <div class="info-primary">
+                    <div class="name">
+                        <a href="javascript:void(0);" class="job-info" onclick="detail({{:position_id}})">
+                            {{:name}}
+                            <span class="red">{{:wages}}</span>
+                        </a>
+                    </div>
+                    <p class="gray">
+                        <a>{{:address}}</a>
+                        <em class="vdot">·</em>
+                        {{:experience}}
+                    </p>
+                </div>
+            </li>
+        {{/for}}
+    {{else}}
+        <img src="./img/on-data.jpg" width="250" height="250" class="my-5">
+    {{/if}}
+</script>
+<script id='mylyList' type="text/x-jsrender">
+    {{if list.length > 0}}
+        {{for list.slice(0, 6)}}
+            <li>
+                <div class="info-primary">
+                    <div class="name">
+                        <a href="javascript:void(0);" class="job-info" onclick="detail({{:position_id}})">
+                            {{:name}}
+                            <span class="red">{{:wages}}</span>
+                        </a>
+                    </div>
+                    <p class="gray">
+                        <a>{{:address}}</a>
+                        <em class="vdot">·</em>
+                        {{:experience}}
+                    </p>
+                </div>
+            </li>
+        {{/for}}
+    {{else}}
+        <img src="./img/on-data.jpg" width="250" height="250" class="my-5">
+    {{/if}}
+</script>
+<script id='mytdList' type="text/x-jsrender">
+    {{if list.length > 0}}
+        {{for list.slice(0, 6)}}
+            <li>
+                <div class="info-primary">
+                    <div class="name">
+                        <a href="javascript:void(0);" class="job-info" onclick="detail({{:position_id}})">
+                            {{:name}}
+                            <span class="red">{{:wages}}</span>
+                        </a>
+                    </div>
+                    <p class="gray">
+                        <a>{{:address}}</a>
+                        <em class="vdot">·</em>
+                        {{:experience}}
+                    </p>
+                </div>
+            </li>
+        {{/for}}
+    {{else}}
+        <img src="./img/on-data.jpg" width="250" height="250" class="my-5">
+    {{/if}}
+</script>

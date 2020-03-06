@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<!-- Required meta tags -->
+	<meta charset="utf-8">
+	<meta name="viewport"
+		content="width=device-width, initial-scale=1, shrink-to-fit=no, maximum-scale=1.0, user-scalable=no">
+	<!-- <link rel="shortcut icon" href="favicon.ico" /> -->
+	<!-- Bootstrap CSS -->
+	<title>吧啦吧啦招聘网</title>
+
+	<link rel="stylesheet" href="css/bootstrap.min.css">
+	<link rel="stylesheet" href="css/base.css">
+	<link rel="stylesheet" href="css/home.css">
+	<link rel="stylesheet" href="css/common.css">
+	<link rel="stylesheet" href="css/header.css">
+	<link rel="stylesheet" href="css/footer.css">
+	<link rel="stylesheet" href="css/toastr.min.css">
+	<link rel="stylesheet" href="./iconfont/iconfont.css">
+</head>
+
+<body>
+	<div id="header"></div>
+	<!-- 侧边栏 -->
+	<div id="tab_bar"></div>
+	<div id="tab_bar_zp"></div>
+	<div class="main-body">
+		<!-- 搜索栏start -->
+		<div class="aui-wrapper">
+			<div class="aui-wrapper-header">
+				<div class="d-flex justify-content-start">
+					<div class="search-logo-sec d-none">
+						<img class="logo" src="./img/zp-headerWt.png" height="46" />
+					</div>
+					<input type="text" class="aui-wrapper-input" placeholder="搜索职位">
+					<input type="submit" class="aui-wrapper-submit" onclick='zw_search(0)'>
+				</div>
+			</div>
+			<div class="aui-wrapper-header-info">
+				<dl>
+					<dt>热门搜索：</dt>
+					<div class="hoteDl">
+						<!-- <dd>
+							<a href="javascript:void(0);" onclick="zw_search($(this).text())">java</a>
+						</dd> -->
+					</div>
+				</dl>
+			</div>
+		</div>
+		<!-- 搜索栏end -->
+		<div class="aui-container-bxo">
+			<div class="d-flex justify-content-start align-items-center flex-nowrap">
+				<!-- 职类start -->
+				<div class="clearfix" style="z-index: 9;min-height: 520px;position: relative;top:10px">
+					<div class="aui-content-sidebar clearfix" id="nav">
+						<div class="aui-content-main" id="aui-content-main" onmouseleave="mouseChange('0')">
+							<!-- 职类jsRernder区 -->
+						</div>
+					</div>
+				</div>
+				<!-- 职类end -->
+				<!-- 轮播广告图 -->
+				<div class="" style="position: relative;margin-left: 232px;">
+					<div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
+						<ol class="carousel-indicators">
+							<!-- jsRender -->
+						</ol>
+						<div class="carousel-inner">
+							<!-- jsRender -->
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<!-- 职位展示 -->
+		<div class="d-flex justify-content-start">
+			<div class="aui-container-msg clearfix">
+				<ul class="nav nav-tabs" id="zwTab" role="tablist">
+					<!-- jsRender -->
+				</ul>
+				<div class="tab-content" id="zwTabContent">
+					<!-- jsRender -->
+				</div>
+
+				<div class="btn-container">
+					<a class="btn-sm btn-startchat mb-2" href="./position.html">查看更多</a>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div id="footer"></div>
+
+
+	<script type="text/javascript" src="js/jquery.min.js"></script>
+	<script src="./iconfont/iconfont.js"></script>
+	<script src="./js/jquery-3.3.1.min.js"></script>
+	<script src="./js/common.js"></script>
+	<script src="./js/header.js"></script>
+	<script src="./js/bootstrap.min.js"></script>
+	<script src="./js/jsrender.js"></script>
+	<script src="./js/toastr.min.js"></script>
+	<script type="text/javascript">
+		$(function () {
+			// 获取上传简历情况提示
+			if (window.localStorage.getItem('postfileSc')) {
+				getPostTips(window.localStorage.getItem('postfileSc'));
+			}
+			getHoteSearch(); // 热门搜索
+			getClassData(); //  请求后台数据-职类
+			getAdvData(); //  请求后台数据-广告轮播
+			getPositionList(); //获取职位列表
+		});
+
+		function zw_search(e) {
+			setTimeout(() => {
+				e == 0 ? localStorage.setItem('position', $('.aui-wrapper-input').val()) : localStorage.setItem(
+					'position', e);
+				//这是测试跳转
+				window.location.href = document.URL.substring(0, document.URL.indexOf('index.html')) +
+					'position.html';
+			}, 1000)
+
+		}
+
+		function getPostTips(e) {
+			if (e == 0) {
+				toastr.success('上传成功');
+			} else if (e == -1) {
+				toastr.error('上传失败');
+			} else {}
+			window.localStorage.removeItem('postfileSc');
+		}
+
+		//热门搜索
+		function getHoteSearch() {
+			let url = httpUrl + '/admin/Web_Userc/getHotsearch';
+			$.ajax({
+				type: 'get', //请求方式
+				url: url, //请求路径 
+				dataType: 'JSON',
+				contentType: 'application/x-www-form-urlencoded;charset=utf-8',
+				beforeSend: function (XMLHttpRequest) {},
+				success: function (data) {
+					if (data.resultcode >= 0) { // 成功
+						var d = data.data;
+						var template = $.templates('#hotelists');
+						$('.hoteDl').html(template.render(d));
+
+					} else {
+						toastr.error('网络异常');
+					}
+				},
+				error: function (obj, msg, e) { //异常
+					// toastr.error('网络异常');
+				}
+			});
+		}
+		var alllists;
+		// 职类
+		function getClassData() {
+			let url = httpUrl + '/admin/Positionc/getjobType';
+			$.ajax({
+				type: 'get', //请求方式
+				url: url, //请求路径 
+				dataType: 'json',
+				contentType: 'application/x-www-form-urlencoded;charset=utf-8',
+				beforeSend: function (XMLHttpRequest) {},
+				success: function (data) { //成功
+					if (data.resultcode >= 0) {
+						if (data.data && data.data.length > 0) {
+							alllists = data.data;
+							renderClassList('0');
+						} else {}
+					}
+				},
+				error: function (obj, msg, e) { //异常
+					toastr.error('网络异常')
+				}
+			});
+		}
+		//广告轮播
+		function getAdvData() {
+			let url = httpUrl + '/admin/Advertisec/getAdverurl';
+			$.ajax({
+				type: 'get', //请求方式
+				url: url, //请求路径 
+				// data: params,     //参数
+				dataType: 'json',
+				contentType: 'application/x-www-form-urlencoded;charset=utf-8',
+				beforeSend: function (XMLHttpRequest) {},
+				success: function (data) { //成功
+					if (data.resultcode >= 0) {
+						if (data.data && data.data.length > 0) {
+							var newlists = data.data;
+							var templatea = $.templates('#theNewsLista');
+							var templateb = $.templates('#theNewsListb');
+							$('.carousel-indicators').html(templatea.render(newlists));
+							$('.carousel-inner').html(templateb.render(newlists));
+						} else {}
+					}
+				},
+				error: function (obj, msg, e) { //异常
+					// console.log(msg);
+				}
+			});
+		}
+
+		//首页职位列表
+		function getPositionList() {
+			let url = httpUrl + '/admin/Web_Userc/positionBigtype/page/1/pagesize/18';
+			$.ajax({
+				type: 'get', //请求方式
+				url: url, //请求路径 
+				dataType: 'json',
+				contentType: 'application/x-www-form-urlencoded;charset=utf-8',
+				beforeSend: function (XMLHttpRequest) {},
+				success: function (data) { //成功
+					if (data.resultcode >= 0) {
+						if (data.data && data.data.length > 0) {
+							var newlists = data.data;
+							newlists.map((it) => {
+								it.children.map((item) => {
+									item['company_name'] = item['company_name'].split('有限公司')[
+										0]; //公司简称
+									item['create_user'] = item['nickname'] + (item['sex'] == '男' ?
+										"先生" : '女士'); //称谓
+								})
+							})
+							var template = $.templates('#positionList');
+							$('#zwTabContent').html(template.render(newlists));
+						} else {}
+					}
+				},
+				error: function (obj, msg, e) { //异常
+					// toastr.error('网络异常')
+				}
+			});
+		}
+
+		//显示/隐藏全部职类
+		function mouseChange(e) {
+			renderClassList(e);
+		}
+		//渲染职类
+		function renderClassList(e) {
+			var Classlists_b;
+			const obj = {
+				"id": "",
+				"typename": "全部职类",
+				"chldren": []
+			}
+			if (e == '0') {
+				Classlists = alllists.slice(0, 8);
+				alllists.length > 8 ? Classlists.push(obj) : '';
+				Classlists_b = Classlists;
+			} else {
+				Classlists = alllists;
+				var list = alllists.slice(0, 8)
+				list.push(obj);
+				Classlists_b = list;
+			}
+			var template1 = $.templates('#theClassList');
+			var template2 = $.templates('#thePositonList');
+			$('#aui-content-main').html(template1.render(Classlists));
+			$('#zwTab').html(template2.render(Classlists_b));
+
+			// 职类展示
+			$('.aui-content-main .aui-content-menu').hover(function () {
+				$(this).addClass('active').find('s').hide();
+				$(this).find('.aui-content-menu-dow').show();
+			}, function () {
+				$(this).removeClass('active').find('s').show();
+				$(this).find('.aui-content-menu-dow').hide();
+			});
+		}
+	</script>
+
+	<!-- jsRrender -->
+	<script id='theNewsLista' type="text/x-jsrender">
+		{{if #getIndex()==0}}
+			<li data-target="#carouselExampleIndicators" data-slide-to="{{: #getIndex()}}" class="active"></li>
+		{{else}}
+			<li data-target="#carouselExampleIndicators" data-slide-to="{{: #getIndex()}}"></li>
+		{{/if}}
+	</script>
+	<script id='theNewsListb' type="text/x-jsrender">
+		{{if #getIndex()==0}}
+			<div class="carousel-item active">
+				{{if url}}
+					<img src="{{:url}}" class="d-block" alt="" width="968px" height="480px">
+				{{/if}}
+			</div>
+		{{else}}
+			<div class="carousel-item">
+				{{if url}}
+					<img src="{{:url}}" class="d-block" alt="" width="968px" height="480px">
+				{{/if}}
+			</div>
+		{{/if}}
+	</script>
+
+	<script id='theClassList' type="text/x-jsrender">
+		<div class="aui-content-menu">
+				{{if typename == '全部职类'}}
+					<div class="aui-content-menu-head" onmouseenter="mouseChange('1')">
+						<div class="aui-content-menu-head-list">
+							<h2>{{:typename}}</h2>
+						</div>
+					</div>
+				{{else}}
+					<div class="aui-content-menu-head">
+						<div class="aui-content-menu-head-list">
+							<h2>{{:typename}}</h2>
+							<i class="aui-content-menu-head-list-arrow"></i>
+						</div>
+					</div>
+				{{/if}}
+				{{if typename == '全部职类'}}
+				{{else}}
+					<div class="aui-content-menu-dow aui-ds">
+						<dl>
+							<dt>
+								<span>{{:typename}}</span>
+							</dt>
+							<dd class='row'>
+								{{for chldren}}
+									<a class="col-3 c-cursor-p uplaodCs" href="javascript:void(0)" onclick="zw_search('{{:typename}}')">{{:typename}}</a>
+								{{/for}}
+							</dd>
+						</dl>
+					</div>
+				{{/if}}
+			</div>
+	</script>
+
+	<script id='thePositonList' type="text/x-jsrender">
+		<li class="nav-item">
+			{{if #getIndex()==0}}
+				<a class="nav-link active" id="{{:id}}-tab" data-toggle="tab" href="#{{:id}}" role="tab"
+					aria-controls="{{:id}}" aria-selected="true">{{:typename}}</a>
+			{{else}}
+				{{if id==''}}
+					<a class="nav-link" href="javascript:void(0)" onclick="zw_search('')">
+						全部职类
+					</a>
+				{{else}}
+					<a class="nav-link" id="{{:id}}-tab" data-toggle="tab" href="#{{:id}}" role="tab"
+						aria-controls="{{:id}}" aria-selected="true">{{:typename}}</a>
+				{{/if}}
+			{{/if}}
+		</li>
+	</script>
+
+	<script id='positionList' type="text/x-jsrender">
+		{{if #getIndex()==0}}
+			<div class="tab-pane fade show active" id="{{:id}}" role="tabpanel" aria-labelledby="{{:id}}-tab">
+				<ul class="cur">
+					{{for children}}
+						<li>
+						<div class="sub-li">
+							<a href="javascript:void(0);" class="job-info" onclick="detail({{:id}})">
+								<p>
+									{{:name}}
+									<span class="salary">{{:wages}}</span>
+								</p>
+								<p class="job-text">
+									{{:address}}
+									<span class="vline"></span>
+									{{:experience}}
+									<span class="vline"></span>
+									{{:xueli}}
+								</p>
+							</a>
+							<a href="javascript:void(0);" class="user-info" onclick="detail({{:id}})">
+								<p>
+									<img src="{{:header_img}}" alt="">
+									{{:company_name}}
+									<span class="vline"></span>
+									<span class="user-text">
+										{{:create_user}}
+										<span class="vline"></span>
+										{{:position}}
+									</span>
+								</p>
+							</a>
+						</div>
+						</li>
+					{{/for}}
+				</ul>
+			</div>
+		{{else}}
+			<div class="tab-pane fade" id="{{:id}}" role="tabpanel" aria-labelledby="{{:id}}-tab">
+				<ul class="cur">
+					{{for children}}
+						<li>
+						<div class="sub-li">
+							<a href="javascript:void(0);" class="job-info" onclick="detail({{:id}})">
+								<p>
+									{{:name}}
+									<span class="salary">{{:wages}}</span>
+								</p>
+								<p class="job-text">
+									{{:address}}
+									<span class="vline"></span>
+									{{:experience}}
+									<span class="vline"></span>
+									{{:xueli}}
+								</p>
+							</a>
+							<a href="javascript:void(0);" class="user-info" onclick="detail({{:id}})">
+								<p>
+									<img src="{{:header_img}}" alt="">
+									{{:company_name}}
+									<span class="vline"></span>
+									<span class="user-text">
+										{{:create_user}}
+										<span class="vline"></span>
+										{{:position}}
+									</span>
+								</p>
+							</a>
+						</div>
+						</li>
+					{{/for}}
+				</ul>
+			</div>
+		{{/if}}
+	</script>
+	<script id='hotelists' type="text/x-jsrender">
+		<dd>
+			<a href="javascript:void(0);" onclick="zw_search($(this).text())">{{:name}}</a>
+		</dd>
+	</script>
+</body>
+
+</html>

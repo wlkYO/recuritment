@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<!-- Required meta tags -->
+	<meta charset="utf-8">
+	<meta name="viewport"
+		content="width=device-width, initial-scale=1, shrink-to-fit=no, maximum-scale=1.0, user-scalable=no">
+	<!-- <link rel="shortcut icon" href="favicon.ico" /> -->
+	<!-- Bootstrap CSS -->
+	<title>吧啦吧啦招聘网</title>
+
+	<link rel="stylesheet" href="css/base.css">
+	<link rel="stylesheet" href="css/home.css">
+	<link rel="stylesheet" href="css/position.css">
+	<link rel="stylesheet" href="css/common.css">
+	<link rel="stylesheet" href="css/header.css">
+	<link rel="stylesheet" href="css/footer.css">
+	<link rel="stylesheet" href="css/pagination.css">
+	<link rel="stylesheet" href="css/toastr.min.css">
+	<link rel="stylesheet" href="css/bootstrap.min.css">
+	<link rel="stylesheet" href="./iconfont/iconfont.css">
+</head>
+
+<body>
+	<div id="header"></div>
+	<!-- 侧边栏 -->
+	<div id="tab_bar"></div>
+	<div id="tab_bar_zp"></div>
+	<div class="main-body" style="min-height: 600px">
+		<!-- 搜索栏start -->
+		<div class="aui-wrapper">
+			<div class="aui-wrapper-header" style="width: 800px">
+				<div class="d-flex justify-content-start">
+					<div class="search-logo-sec d-none">
+						<img class="logo" src="./img/zp-headerWt.png" height="46" />
+					</div>
+					<input type="text" class="aui-wrapper-input" placeholder="搜索职位">
+					<button class="btn btn-search" onclick="getList()"></button>
+				</div>
+			</div>
+		</div>
+		<!-- 搜索栏end -->
+
+		<div class="row py-2" style="margin: 0 auto;">
+			<div class="col-6 d-flex justify-content-start align-items-center" style="padding: 0 75px;">
+				<label for="inputEmail" class="control-label tit">要搜索的位置：</label>
+				<fieldset class="fieldsetClass">
+					<label for="addr-show02" class="w-100">
+						<input type="text" class="form-control" id="addr-show02" style="background-color: #fff;"
+							placeholder="地址不限" required>
+					</label>
+					<div id="addr">
+						<div id="addr-choice">
+							<ul id="title-wrap">
+								<li value="0">省份</li>
+								<li value="1">城市</li>
+								<li value="2">县区</li>
+							</ul>
+							<div id="show-panel">
+								<ul id="addr-wrap">
+								</ul>
+							</div>
+						</div>
+						<button type="button" class="btn met2 ml-2 mb-2">确定</button>
+					</div>
+
+				</fieldset>
+			</div>
+
+			<div class="col-12 d-flex justify-content-start align-items-top" style="padding: 0 75px;">
+				<span class="mt-2 tit">塞选条件：</span>
+				<div id="box">
+					<dl class="one">
+						<dt>工作经验：</dt>
+						<dd>不限</dd>
+						<dd>在校生</dd>
+						<dd>应届生</dd>
+						<dd>1年以内</dd>
+						<dd>1-3年</dd>
+						<dd>3-5年</dd>
+						<dd>5-10年</dd>
+						<dd>10年以上</dd>
+					</dl>
+					<dl class="two">
+						<dt>学历要求：</dt>
+						<dd>不限</dd>
+						<dd>初中及以下</dd>
+						<dd>中专/中技</dd>
+						<dd>高中</dd>
+						<dd>大专</dd>
+						<dd>本科</dd>
+						<dd>硕士</dd>
+						<dd>博士</dd>
+					</dl>
+					<dl class="three">
+						<dt>薪资要求：</dt>
+						<dd>不限</dd>
+						<dd>3k以下</dd>
+						<dd>3-5k</dd>
+						<dd>5-10k</dd>
+						<dd>10-15k</dd>
+						<dd>15-20k</dd>
+						<dd>20-30k</dd>
+						<dd>30-40k</dd>
+						<dd>50k以上</dd>
+					</dl>
+					<dl style="border: none" class="four">
+						<dt>发布时间：</dt>
+						<dd>不限</dd>
+						<dd>最早发布</dd>
+						<dd>最晚发布</dd>
+					</dl>
+				</div>
+			</div>
+
+			<!-- 搜索内容 -->
+			<ul class='job-list'>
+				<!-- jsrender -->
+			</ul>
+			<!-- 分页 -->
+			<div class="pagination justify-content-center"></div>
+		</div>
+	</div>
+	<div id="footer"></div>
+
+
+	<script type="text/javascript" src="js/jquery.min.js"></script>
+	<script src="./js/jquery-3.3.1.min.js"></script>
+	<script src="./js/common.js"></script>
+	<script src="./js/header.js"></script>
+	<script src="./js/bootstrap.min.js"></script>
+	<!-- <script src="./js/popper.min.js"></script> -->
+	<script src="./js/jsrender.js"></script>
+	<script src="./js/toastr.min.js"></script>
+	<script src="./js/city.js"></script>
+	<script src="./js/methodCity.js"></script>
+	<script src="./js/pagination.js"></script>
+	<script type="text/javascript">
+		$(function () {
+			//离开当前页面 监听
+			window.onbeforeunload = function (e) {
+				// var e = window.event || e;
+				localStorage.setItem('position', '');
+			}
+
+			$('.aui-wrapper-input').val(localStorage.getItem('position'));
+			getList();
+		});
+
+		// 条件筛选
+		var dls = document.querySelectorAll('dl:not(.select)');
+		var selected = document.querySelector('.select');
+		for (var i = 0; i < dls.length; i++) {
+			//1.给每一行的dl标签添加一条属性，用于对应下面的dd标签。
+			//2.我们约定如果这个属性的值为true表示对应的标签没有创建。
+			//3.如果值为false表示对应的标签已经创建了
+			dls[i].mark = false;
+
+			select(i);
+		}
+
+		function hashChange() {
+			localStorage.setItem('position', '');
+		}
+
+		var arr = ['', '', '', ''];
+
+		function select(n) {
+			var dds = dls[n].querySelectorAll('dd');
+			var prev = null;
+			var dd = null; //每一行都需要创建一个dd标签，放到这里是为了如果标签已经被创建了，通过这个变量能够找到这个标签
+			var arr0 = ['one', 'two', 'three', 'four'];
+			for (var i = 0; i < dds.length; i++) {
+				dds[i].onclick = function (e) {
+					//给当前点击的添加一个高亮
+
+					if (prev) {
+						prev.className = ''
+					}
+					this.className = 'active';
+
+					prev = this;
+					let text = prev.innerHTML;
+					let attrName = prev.parentNode.className;
+					let i = arr0.indexOf(attrName);
+					if (i == 3) {
+						if (text == '最早发布') {
+							text = 'timeUp';
+						}
+						if (text == '最晚发布') {
+							text = 'timeDown';
+						}
+						if (text == '不限') {
+							text = '';
+						}
+					}
+					arr.splice(i, 1, text == '不限' ? '' : text);
+				};
+			}
+		}
+
+		var page = 1,
+			pagesize = 10,
+			pageCount = 0;
+
+		function getList(e) {
+			console.log(e)
+			isDataValid(e) ? page = e : page = 1;
+			let url = httpUrl + '/admin/Web_Userc/getPosition/page/' + page + '/pagesize/' + pagesize;
+			if (isDataValid($('.aui-wrapper-input').val())) {
+				url += '/name/' + $('.aui-wrapper-input').val();
+			}
+			if (isDataValid($('#addr-show02').val())) {
+				url += '/address/' + $('#addr-show02').val();
+			}
+			if (isDataValid(arr[0])) {
+				url += '/experience/' + arr[0];
+			}
+			if (isDataValid(arr[1])) {
+				url += '/xueli/' + arr[1];
+			}
+			if (isDataValid(arr[2])) {
+				url += '/wages/' + arr[2];
+			}
+			if (isDataValid(arr[3])) {
+				url += '/timetype/' + arr[3];
+			}
+			$.ajax({
+				type: 'get', //请求方式
+				url: url, //请求路径 
+				dataType: 'JSON',
+				contentType: 'application/x-www-form-urlencoded;charset=utf-8',
+				beforeSend: function (XMLHttpRequest) {},
+				success: function (data) {
+					if (data.resultcode >= 0) { // 成功
+						var d = data.data.list;
+						pageCount = Math.ceil(data.data.count / pagesize);
+						d.length > 0 ? d.map((item) => {
+							item['company_name'] = item['company_name'].split('有限公司')[
+								0]; //公司简称
+							item['create_user'] = item['nickname'] + (item['sex'] == '男' ?
+								"先生" : '女士'); //称谓
+						}) : '';
+						var dd = data.data;
+						var template = $.templates('#lists');
+						$('.job-list').html(template.render(dd));
+
+						if (data.data.list.length == 0) {
+							$('.pagination').hide();
+						} else {
+							$('.pagination').show();
+							$(".pagination").createPage({
+								pageCount: pageCount,
+								current: page,
+								backFn: function (val) {
+									page = val;
+									getList(page);
+								}
+							});
+						}
+
+					} else {
+						$('.pagination').hide();
+						toastr.error('网络异常');
+					}
+				},
+				error: function (obj, msg, e) { //异常
+					toastr.error('网络异常');
+				}
+			});
+		}
+	</script>
+
+	<!-- jsRrender -->
+	<script id='lists' type="text/x-jsrender">
+		{{if list.length > 0}}
+			{{for list}}
+				<li onclick="detail({{:id}},true)">
+					<div class="job-primary">
+						<div class="info-primary">
+							<h3 class="name">
+								<a>
+									<div class="job-title">{{:name}}</div>
+									<span class="red">{{:wages}}</span>
+		
+									<div class="info-detail" style="top: 0px;"></div>
+								</a>
+							</h3>
+							<p>
+								{{:address}}
+								<em class="vline"></em>
+								{{:experience}}
+								<em class="vline"></em>
+								{{:xueli}}
+							</p>
+						</div>
+						<div class="info-company">
+							<div class="company-text">
+								<h3 class="name">{{:company_name}}</h3>
+							</div>
+						</div>
+						<div class="info-publis">
+							<h3 class="name">
+								<img src="{{:header_img}}">
+								{{:create_user}}
+								<em class="vline"></em>
+								{{:position}}
+							</h3>
+						</div>
+					</div>
+				</li>
+			{{/for}}
+		{{else}}
+			<img src="./img/on-data.jpg" width="200" height="200" class="my-5">
+		{{/if}}
+	</script>
+
+</body>
+
+</html>

@@ -1,0 +1,395 @@
+<!-- 管理界面 -->
+<!DOCTYPE html>
+<html>
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1, shrink-to-fit=no, maximum-scale=1.0, user-scalable=no">
+    <!-- <link rel="shortcut icon" href="favicon.ico" /> -->
+    <!-- Bootstrap CSS -->
+    <title>吧啦吧啦招聘网</title>
+
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/manage.css">
+    <link rel="stylesheet" href="css/base.css">
+    <link rel="stylesheet" href="css/home.css">
+    <link rel="stylesheet" href="css/common.css">
+    <link rel="stylesheet" href="css/header.css">
+    <link rel="stylesheet" href="css/footer.css">
+    <link rel="stylesheet" href="css/toastr.min.css">
+    <link rel="stylesheet" href="css/pagination.css">
+    <link rel="stylesheet" href="./iconfont/iconfont.css">
+
+    <script type="text/javascript" src="js/jquery.min.js"></script>
+    <script src="./js/jquery-3.3.1.min.js"></script>
+    <script src="./js/common.js"></script>
+    <script src="./js/header.js"></script>
+    <script src="./js/bootstrap.min.js"></script>
+    <script src="./js/toastr.min.js"></script>
+    <script src="./js/jsrender.js"></script>
+    <script src="./js/pagination.js"></script>
+</head>
+
+<body>
+    <div id="header"></div>
+    <div class="main-body" style="background: #f6f6f8">
+        <div class="chat-history-wrap">
+            <div class="job-tab">
+                <a class="current" href="./manage.html#sc">感兴趣</a>
+                <a class="" href="./manage.html#ly">留言过</a>
+                <a class="" href="./manage.html#td">已投递</a>
+            </div>
+            <ul class="sc_tab d-none">
+                <!-- jsrender -->
+            </ul>
+            <ul class="ly_tab d-none">
+                <!-- jsrender -->
+            </ul>
+            <ul class="td_tab d-none">
+                <!-- jsrender -->
+            </ul>
+            <!-- 分页 -->
+            <div class="pagination justify-content-end pr-5 py-2"></div>
+        </div>
+    </div>
+    <div id="footer"></div>
+
+    <script type="text/javascript">
+        var page = 1,
+            pagesize = 5,
+            pageCount = 0;
+        $(function () {
+            whichMenuActive()
+            if (('onhashchange' in window) && ((typeof document.documentMode === 'undefined') || document
+                    .documentMode == 8)) {
+                // 浏览器支持onhashchange事件
+                window.onhashchange = hashChange; // TODO，对应新的hash执行的操作函数
+            } else {
+                // 不支持则用定时器检测的办法
+                setInterval(function () {
+                    // 检测hash值或其中某一段是否更改的函数， 在低版本的iE浏览器中通过window.location.hash取出的指和其它的浏览器不同，要注意
+                    var ischanged = isHashChanged();
+                    if (ischanged) {
+                        hashChange(); // TODO，对应新的hash执行的操作函数
+                    }
+                }, 150);
+            }
+        });
+        //监听触发操作
+        function hashChange() {
+            whichMenuActive();
+        }
+        // 根据url添加当前菜单激活状态
+        function whichMenuActive() {
+            const baseUrl = document.URL;
+            if (baseUrl.indexOf('manage.html#sc') > -1 || baseUrl.indexOf('manage.html#') == -1) { //收藏
+                $('.job-tab a').siblings().removeClass('current');
+                $('.job-tab a').eq(0).addClass('current');
+                $('.sc_tab').removeClass('d-none');
+                $('.ly_tab').addClass('d-none');
+                $('.td_tab').addClass('d-none');
+                page = 1;
+                getList('getCollection');
+            }
+            if (baseUrl.indexOf('manage.html#ly') > -1) { //留言
+                $('.job-tab a').siblings().removeClass('current');
+                $('.job-tab a').eq(1).addClass('current');
+                $('.ly_tab').removeClass('d-none');
+                $('.sc_tab').addClass('d-none');
+                $('.td_tab').addClass('d-none');
+                page = 1;
+                getList('getQLiuyan');
+            }
+            if (baseUrl.indexOf('manage.html#td') > -1) { //投递
+                $('.job-tab a').siblings().removeClass('current');
+                $('.job-tab a').eq(2).addClass('current');
+                $('.td_tab').removeClass('d-none');
+                $('.ly_tab').addClass('d-none');
+                $('.sc_tab').addClass('d-none');
+                page = 1;
+                getList('getDelivery');
+            }
+
+            $('.job-tab a').click(function (n) {
+                $(this).siblings().removeClass('current');
+                $(this).addClass('current');
+                var x = $(this)[0].hash.split('#')[1];
+                $('.td_tab').addClass('d-none');
+                $('.sc_tab').addClass('d-none');
+                $('.ly_tab').addClass('d-none');
+                $('.' + x + '_tab').removeClass('d-none');
+                page = 1;
+            });
+        }
+
+        //鼠标移入移除事件
+        function hover() {
+            setTimeout(() => {
+                $('ul li').mouseenter(function () {
+                    $(this).find('.item-content .info-header .btns').addClass('btnShow')
+                })
+                $('ul li').mouseleave(function () {
+                    $(this).find('.item-content .info-header .btns').removeClass('btnShow')
+                })
+            }, 0)
+        }
+
+        function getList(e) {
+            let url = httpUrl + '/admin/Web_Userc/' + e + '/token/' + getToken() + '/page/' + page + '/pagesize/' +
+                pagesize;;
+            $.ajax({
+                type: 'get', //请求方式
+                url: url, //请求路径 
+                dataType: 'json',
+                contentType: 'application/x-www-form-urlencoded;charset=utf-8',
+                beforeSend: function (XMLHttpRequest) {},
+                success: function (data) { //成功
+                    if (data.resultcode >= 0) {
+                        if (data.data) {
+                            var Classlists = data.data;
+                            pageCount = Math.ceil(data.data.count / pagesize);
+                            Classlists.list.map((item) => {
+                                item['create_user'] = item['nickname'] + (item['sex'] == '男' ?
+                                    "先生" : '女士'); //称谓
+                                item.children ? item.children.map(it => {
+                                    it['reply_name'] = it['reply_content'] ? item[
+                                        'create_user'] : null;
+                                }) : '';
+                            })
+
+                            var template = $.templates('#scList');
+                            var template1 = $.templates('#lyList');
+                            console.log(Classlists)
+                            $('.sc_tab').html(template.render(Classlists));
+                            $('.ly_tab').html(template1.render(Classlists));
+                            $('.td_tab').html(template.render(Classlists));
+
+                            $(".pagination").createPage({
+                                pageCount: pageCount,
+                                current: page,
+                                backFn: function (val) {
+                                    page = val;
+                                    getList(e);
+                                }
+                            });
+                            hover();
+                            if (isDataValid(data.data.list) && data.data.list == 0) {
+                                $('.pagination').hide();
+                            } else {
+                                $('.pagination').show();
+                            }
+                        } else {}
+                    } else if (data.resultcode == -2) {
+                        reLogin(data);
+                    }
+                },
+                error: function (obj, msg, e) { //异常
+                    $('.pagination').hide();
+                    toastr.error('网络错误');
+                }
+            });
+        }
+
+        //继续留言
+        function rewordSend(i, m, n) {
+            let url = httpUrl + '/admin/Web_Userc/releaseLiuyan/token/' + getToken();
+            var params = {
+                "position_id": n,
+                "liuyancontent": $('#reword_' + i).val(),
+                "company_id": m,
+            }
+            if (!isDataValid(params.liuyancontent)) {
+                return;
+            }
+            // ajax请求
+            $.ajax({
+                type: 'POST', //请求方式
+                url: url, //请求路径 
+                data: JSON.stringify(params), //参数
+                dataType: 'JSON',
+                contentType: 'application/x-www-form-urlencoded;charset=utf-8',
+                beforeSend: function (XMLHttpRequest) {},
+                success: function (data) { //成功
+                    if (data.resultcode >= 0) {
+                        toastr.success('留言成功')
+                        getList('getQLiuyan');
+                        setTimeout(() => {
+                            $('#msglist_' + i).removeClass('d-none').show();
+                        })
+
+                    } else if (data.resultcode == -2) {
+                        reLogin(data);
+                    } else {
+                        toastr.error('留言失败')
+                    }
+                    $('#reword_' + i).val('');
+                },
+                error: function (obj, msg, e) { //异常
+                    toastr.error('网络异常')
+                }
+            });
+        }
+
+        //留言内容显示/隐藏
+        function msgToggle(i) {
+            if ($('#msglist_' + i).attr('class') == "w-100 d-none") {
+                // $('.ckjl_' + i).html('收起')
+                $('#msglist_' + i).removeClass('d-none').show();
+            } else {
+                $('#msglist_' + i).toggle();
+                // $('.ckjl_' + i).html('查看记录')
+            }
+
+        }
+
+        //删除记录
+        function remove(e, id) {
+            const baseUrl = document.URL;
+            if (baseUrl.indexOf('manage.html#sc') > -1 || baseUrl.indexOf('manage.html#') == -1) { //收藏
+                removeData('sc', id);
+            }
+            if (baseUrl.indexOf('manage.html#td') > -1) { //投递
+                removeData('td', id);
+            }
+            if (e == 'ly') {
+                removeData(e, id);
+            }
+        }
+
+        function removeData(n, id) {
+            let url = httpUrl + '/admin/Web_Userc/delCollection/token/' + getToken();
+            var params = {
+                "type": n,
+                "id": id
+            }
+            // ajax请求
+            $.ajax({
+                type: 'POST', //请求方式
+                url: url, //请求路径 
+                data: JSON.stringify(params), //参数
+                dataType: 'JSON',
+                contentType: 'application/x-www-form-urlencoded;charset=utf-8',
+                beforeSend: function (XMLHttpRequest) {},
+                success: function (data) { //成功
+                    if (data.resultcode >= 0) {
+                        toastr.success('移除成功')
+                        if (n == 'sc') {
+                            getList('getCollection');
+                        }
+                        if (n == 'td') {
+                            getList('getDelivery');
+                        }
+                        if (n == 'ly') {
+                            getList('getQLiuyan');
+                        }
+                    } else if (data.resultcode == -2) {
+                        reLogin(data);
+                    } else {
+                        toastr.error('移除失败')
+                    }
+                },
+                error: function (obj, msg, e) { //异常
+                    toastr.error('网络异常')
+                }
+            });
+        }
+    </script>
+    <!-- jsRrender -->
+    <script id='scList' type="text/x-jsrender">
+        {{if list.length > 0}}
+            {{for list}}
+                <li class="item-boss">
+                    <div class="figure"><img
+                        src="{{:header_img}}">
+                    </div>
+                    <div class="item-content">
+                        <div class="info-header">
+                            <div class="info-header">
+                                <div class="btns"><a href="javascript:;"
+                                    class="btn btn-startchat" onclick="remove('',{{:id}})">移除</a>
+                                </div>
+                                <h3 class="name">{{:create_user}}<em class="vline"></em>{{:position}}
+            
+                                </h3>
+                            </div>
+                        </div>
+                        <div class="info-primary info-primary-noninterview">
+                            <div class="job-info">
+                                <div class="job-name">
+                                    <a href="javascript:void(0)" class="job-info" onclick="detail({{:position_id}})">
+                                        <span class="jobname">{{:name}}</span>
+                                        <span class="salary">{{:wages}}</span>
+                                    </a>
+                                </div>
+                                <p class="gray">{{:address}}<em class="vline"></em>{{:experience}}<em class="vline"></em>{{:xueli}}</p>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+            {{/for}}
+        {{else}}
+            <img src="./img/on-data.jpg" width="250" height="250" style="margin:3rem 25.5rem;">
+        {{/if}}
+    </script>
+    <script id='lyList' type="text/x-jsrender">
+        {{if list.length > 0}}
+            {{for list}}
+                <li class="item-boss">
+                    <div class="figure"><img
+                            src="{{:header_img}}">
+                    </div>
+                    <div class="item-content">
+                        <div class="info-header">
+                            <div class="info-header">
+                                <div class="btns"><a href="javascript:;"
+                                    class="btn btn-startchat" onclick="remove('ly',{{:position_id}})">移除</a>
+                                </div>
+                                <h3 class="name">{{:create_user}}<em class="vline"></em>{{:position}}
+            
+                                </h3>
+                            </div>
+                        </div>
+                        <div class="info-primary info-primary-noninterview">
+                            <div class="job-info">
+                                <div class="job-name">
+                                    <a href="javascript:void(0)" class="job-info" onclick="detail({{:position_id}})">
+                                        <span class="jobname">{{:name}}</span>
+                                        <span class="salary">{{:wages}}</span>
+                                    </a>
+                                </div>
+                                <p class="gray">{{:address}}<em class="vline"></em>{{:experience}}<em class="vline"></em>{{:xueli}}</p>
+                            </div>
+                            <a href="javascript:void(0)" class="job-info ckjl_{{:#getIndex()}}" onclick="msgToggle({{:#getIndex()}})"style="color:#54cbc4">
+                                留言记录
+                            </a>
+                            <div class="w-100 d-none" id="msglist_{{:#getIndex()}}" style="min-height:200px;">
+                                <div class="job-info px-5">
+                                    {{for children}}
+                                        <p class="gray">{{>create_time}}&nbsp;我：{{>liuyancontent}}</p>
+                                        {{if reply_content!=null}}
+                                            <p class="nogray">{{>reply_time}}&nbsp;{{:reply_name}}：{{>reply_content}}</p>
+                                        {{/if}}
+                                        <p class="hline"></p>
+                                    {{/for}}
+                                    <form data-toggle="validator" role="form" onsubmit="return false" class="tab-pane fade show"
+                                        id="rewordForm_{{:#getIndex()}}" role="tabpanel" aria-labelledby="find-tab">
+                                        <p class="gray">继续留言：</p>
+                                        <textarea rows="2" class="form-control" placeholder="请保持言论文明：" required id="reword_{{:#getIndex()}}"></textarea>
+                                        <button type="submit" class="submit btn btn-info f-r my-2" onclick="rewordSend({{:#getIndex()}},{{:company_id}},{{:position_id}})">Send</button>
+                                    </form>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </li>
+            {{/for}}
+        {{else}}
+            <img src="./img/on-data.jpg" width="250" height="250" style="margin:3rem 25.5rem;">
+        {{/if}}
+    </script>
+</body>
+
+</html>

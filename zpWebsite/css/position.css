@@ -1,0 +1,288 @@
+.row {
+    width: 950px;
+    /* min-width: 1200px;
+    padding: 10px 18rem 10px; */
+    background: rgba(255, 255, 255, 0.8);
+    /* box-shadow: 0 0 10px rgba(73, 66, 66, .1); */
+}
+
+dl,
+dd {
+    margin: 0;
+}
+
+#box {
+    min-width: 703px;
+    /* width: 850px;
+    background: rgba(255, 255, 255, 0.8);
+    box-shadow: 0 0 10px rgba(73, 66, 66, .1);
+    margin: 50px auto;
+    border: 1px solid #E5E5E5; */
+}
+
+#box dl {
+    height: 50px;
+    line-height: 50px;
+    border-bottom: 1px dashed #dadada;
+    margin: 0;
+}
+
+#box dt {
+    float: left;
+    color: #8a8a8a;
+}
+
+#box dd {
+    float: left;
+    color: #252525;
+    margin: 0 10px;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+#box dd.active {
+    color: #c4284d;
+    font-weight: bold;
+}
+
+#box dl.select {
+    background: #efefef;
+    margin: 0;
+    padding: 0 20px;
+}
+
+#box dl.select dd {
+    border: 1px solid #989898;
+    ;
+    height: 25px;
+    line-height: 24px;
+    margin-top: 13px;
+    padding: 0 2px 0 10px;
+    border-radius: 3px;
+    background-color: #fff;
+}
+
+#box dl.select dd span {
+    width: 20px;
+    height: 20px;
+    display: inline-block;
+    text-align: center;
+    line-height: 22px;
+    background: #00d7c6;
+    color: #fff;
+    margin-left: 10px;
+    cursor: pointer;
+    border-radius: 3px;
+}
+
+.fieldsetClass {
+    min-width: 280px;
+}
+
+.tit {
+    min-width: 100px;
+}
+
+.job-list {
+    padding-top: 1rem;
+    min-height: 400px;
+    margin: 0 auto;
+}
+
+.job-list li {
+    height: 88px;
+    cursor: pointer;
+}
+
+.job-list li:hover {
+    border-radius: 4px;
+    background: #efefef;
+}
+
+.job-primary {
+    height: 89px;
+    color: #4a4160;
+    padding: 20px 0 19px;
+    margin: 0 30px;
+    border-top: 1px #f2f2f5 solid;
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.job-list li:after {
+    content: '';
+    display: block;
+    overflow: hidden;
+    visibility: hidden;
+    clear: both;
+}
+
+.job-primary .info-primary {
+    width: 284px;
+    margin-right: 40px;
+}
+
+.job-primary .info-company {
+    width: 255px;
+    margin-right: 15px;
+}
+
+.job-primary .info-publis {
+    float: left;
+    white-space: nowrap;
+    overflow: hidden;
+    width: 210px;
+    text-overflow: ellipsis;
+    text-align: left;
+}
+
+.job-primary .info-company,
+.job-primary .info-primary {
+    float: left;
+    color: #4a4160;
+}
+
+.job-list li .name {
+    font-size: 16px;
+    font-weight: 400;
+    height: 26px;
+    line-height: 26px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.job-list li .info-primary p {
+    margin-top: 2px;
+}
+
+.job-list li p {
+    margin-top: 2px;
+    font-size: 12px;
+    color: #9fa3b0;
+    width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.job-list li .name a {
+    height: 26px;
+    display: inline-block;
+    line-height: 26px;
+    color: #414a60 !important;
+}
+
+.job-list li .name a:hover {
+    color: #5dd5c8 !important;
+}
+
+a {
+    text-decoration: none !important;
+    word-break: keep-all;
+}
+
+.job-list li .name .job-title {
+    max-width: 174px;
+}
+
+.job-list li .name .job-title {
+    font-size: 16px;
+    color: #00c2b3;
+    font-weight: 400;
+    max-width: 170px;
+    display: inline-block;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    vertical-align: middle;
+}
+
+.job-list li .name span.red {
+    height: 26px;
+    display: inline-block;
+    line-height: 26px;
+    position: relative;
+    vertical-align: middle;
+}
+
+.job-list li .name .red {
+    padding-left: 8px;
+}
+
+.job-primary .info-detail {
+    position: absolute;
+    white-space: normal;
+    right: -30px;
+    top: 0;
+    width: 500px;
+    height: auto;
+    z-index: 20;
+    display: none;
+    padding: 16px 0 0 0;
+    color: #abafba;
+    background: rgba(244, 247, 252, .9);
+    box-shadow: 0 4px 8px 0 rgba(65, 74, 96, .2);
+    z-index: 1001;
+}
+
+.vline {
+    display: inline-block;
+    width: 1px;
+    height: 12px;
+    vertical-align: middle;
+    background: #e0e0e0;
+    margin: 0 10px;
+}
+
+em {
+    font-style: normal;
+}
+
+.company-text {
+    display: inline-block;
+    vertical-align: top;
+    width: 100%;
+}
+
+.job-primary .info-publis img {
+    width: 20px;
+    height: 20px;
+    border-radius: 40px;
+    vertical-align: middle;
+    margin: -3px 10px 0 0;
+}
+
+.job-primary .btn-startchat {
+    float: right;
+    /* display: none; */
+    /* margin-top: 8px; */
+    background: #5dd5c8;
+    color: #fff;
+    height: 33px;
+    margin-left: 0;
+}
+
+.red {
+    color: #fc703e !important;
+}
+
+.btn-clear{
+    float: right;
+    margin: 0 10px;
+}
+/* .btn {
+    display: inline-block;
+    min-width: 112px;
+    box-sizing: content-box;
+    height: 36px;
+    line-height: 36px;
+    border: 1px #5dd5c8 solid;
+    font-size: 16px;
+    color: #fff;
+    letter-spacing: 1px;
+    background: #5dd5c8;
+    text-align: center;
+    cursor: pointer;
+} */

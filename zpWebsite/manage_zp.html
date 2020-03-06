@@ -1,0 +1,437 @@
+<!-- 管理界面 -->
+<!DOCTYPE html>
+<html>
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1, shrink-to-fit=no, maximum-scale=1.0, user-scalable=no">
+    <!-- <link rel="shortcut icon" href="favicon.ico" /> -->
+    <!-- Bootstrap CSS -->
+    <title>吧啦吧啦招聘网</title>
+
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/manage.css">
+    <link rel="stylesheet" href="css/base.css">
+    <link rel="stylesheet" href="css/home.css">
+    <link rel="stylesheet" href="css/common.css">
+    <link rel="stylesheet" href="css/header.css">
+    <link rel="stylesheet" href="css/footer.css">
+    <link rel="stylesheet" href="css/toastr.min.css">
+    <link rel="stylesheet" href="css/pagination.css">
+    <link rel="stylesheet" href="./iconfont/iconfont.css">
+
+    <script type="text/javascript" src="js/jquery.min.js"></script>
+    <script src="./js/jquery-3.3.1.min.js"></script>
+    <script src="./js/common.js"></script>
+    <script src="./js/header.js"></script>
+    <script src="./js/bootstrap.min.js"></script>
+    <script src="./js/toastr.min.js"></script>
+    <!-- <script src="./js/popper.min.js"></script> -->
+    <script src="./js/jsrender.js"></script>
+    <script src="./js/pagination.js"></script>
+    <script src="./iconfont/iconfont.js"></script>
+</head>
+
+<body>
+    <div id="header"></div>
+    <div class="main-body" style="background: #f6f6f8">
+        <div class="chat-history-wrap">
+            <div class="job-tab">
+                <a class="current" href="./manage_zp.html#sc">我的发布</a>
+                <a class="" href="./manage_zp.html#ly">收到留言</a>
+                <a class="" href="./manage_zp.html#td">收到简历</a>
+            </div>
+            <ul class="sc_tab d-none">
+                <!-- jsrender -->
+            </ul>
+            <ul class="ly_tab d-none">
+                <!-- jsrender -->
+            </ul>
+            <ul class="td_tab d-none">
+                <!-- jsrender -->
+            </ul>
+            <!-- 分页 -->
+            <div class="pagination justify-content-end pr-5 py-2"></div>
+        </div>
+    </div>
+    <div id="footer"></div>
+
+    <script type="text/javascript">
+        var page = 1,
+            pagesize = 5,
+            pageCount = 0;
+        $(function () {
+            whichMenuActive()
+            if (('onhashchange' in window) && ((typeof document.documentMode === 'undefined') || document
+                    .documentMode == 8)) {
+                // 浏览器支持onhashchange事件
+                window.onhashchange = hashChange; // TODO，对应新的hash执行的操作函数
+            } else {
+                // 不支持则用定时器检测的办法
+                setInterval(function () {
+                    // 检测hash值或其中某一段是否更改的函数， 在低版本的iE浏览器中通过window.location.hash取出的指和其它的浏览器不同，要注意
+                    var ischanged = isHashChanged();
+                    if (ischanged) {
+                        hashChange(); // TODO，对应新的hash执行的操作函数
+                    }
+                }, 150);
+            }
+        });
+        //监听触发操作
+        function hashChange() {
+            whichMenuActive();
+        }
+        // 根据url添加当前菜单激活状态
+        function whichMenuActive() {
+            const baseUrl = document.URL;
+            if (baseUrl.indexOf('manage_zp.html#sc') > -1 || baseUrl.indexOf('manage_zp.html#') == -1) { //发布
+                $('.job-tab a').siblings().removeClass('current');
+                $('.job-tab a').eq(0).addClass('current');
+                $('.sc_tab').removeClass('d-none');
+                $('.ly_tab').addClass('d-none');
+                $('.td_tab').addClass('d-none');
+                page = 1;
+                getList('personalPosition');
+            }
+            if (baseUrl.indexOf('manage_zp.html#ly') > -1) { //留言
+                $('.job-tab a').siblings().removeClass('current');
+                $('.job-tab a').eq(1).addClass('current');
+                $('.ly_tab').removeClass('d-none');
+                $('.sc_tab').addClass('d-none');
+                $('.td_tab').addClass('d-none');
+                page = 1;
+                getList('getLiuyan');
+            }
+            if (baseUrl.indexOf('manage_zp.html#td') > -1) { //简历
+                $('.job-tab a').siblings().removeClass('current');
+                $('.job-tab a').eq(2).addClass('current');
+                $('.td_tab').removeClass('d-none');
+                $('.ly_tab').addClass('d-none');
+                $('.sc_tab').addClass('d-none');
+                page = 1;
+                getList('getResume');
+            }
+
+            $('.job-tab a').click(function (n) {
+                $(this).siblings().removeClass('current');
+                $(this).addClass('current');
+                var x = $(this)[0].hash.split('#')[1];
+                $('.td_tab').addClass('d-none');
+                $('.sc_tab').addClass('d-none');
+                $('.ly_tab').addClass('d-none');
+                $('.' + x + '_tab').removeClass('d-none');
+                page = 1;
+            });
+        }
+
+        //鼠标移入移除事件
+        function hover() {
+            setTimeout(() => {
+                $('ul li').mouseenter(function () {
+                    $(this).find('.item-content .info-header .btns').addClass('btnShow')
+                })
+                $('ul li').mouseleave(function () {
+                    $(this).find('.item-content .info-header .btns').removeClass('btnShow')
+                })
+            }, 0)
+        }
+
+        function getList(e) {
+            let url = httpUrl + '/admin/Web_Userc/' + e + '/token/' + getToken() + '/page/' + page + '/pagesize/' +
+                pagesize;;
+            $.ajax({
+                type: 'get', //请求方式
+                url: url, //请求路径 
+                dataType: 'json',
+                contentType: 'application/x-www-form-urlencoded;charset=utf-8',
+                beforeSend: function (XMLHttpRequest) {},
+                success: function (data) { //成功
+                    if (data.resultcode >= 0) {
+                        if (isDataValid(data.data)) {
+                            var Classlists = data.data;
+                            pageCount = Math.ceil(data.data.count / pagesize);
+                            Classlists.list.map((item) => {
+                                item['create_user'] = item['nickname'] + (item['sex'] == '男' ?
+                                    "先生" : '女士'); //称谓
+                            })
+
+                            var template = $.templates('#scList');
+                            var template1 = $.templates('#lyList');
+                            var template2 = $.templates('#tdList');
+                            $('.sc_tab').html(template.render(Classlists));
+                            $('.ly_tab').html(template1.render(Classlists));
+                            $('.td_tab').html(template2.render(Classlists));
+
+                            $(".pagination").createPage({
+                                pageCount: pageCount,
+                                current: page,
+                                backFn: function (val) {
+                                    page = val;
+                                    getList(e);
+                                }
+                            });
+                            hover();
+                            if (isDataValid(data.data.list) && data.data.list == 0) {
+                                $('.pagination').hide();
+                            } else {
+                                $('.pagination').show();
+                            }
+                        } else {}
+                    } else if (data.resultcode == -2) {
+                        reLogin(data);
+                    }
+                },
+                error: function (obj, msg, e) { //异常
+                    $('.pagination').hide();
+                    toastr.error('网络错误');
+                }
+            });
+        }
+
+        //留言 回复
+        function reply(i, id) {
+            let url = httpUrl + '/admin/Web_Userc/replyLiuyan/token/' + getToken();
+            var params = {
+                "id": id,
+                "reply_content": $('#reword_' + i).val()
+            }
+            if (!isDataValid(params.reply_content)) {
+                return;
+            }
+            // ajax请求
+            $.ajax({
+                type: 'POST', //请求方式
+                url: url, //请求路径 
+                data: JSON.stringify(params), //参数
+                dataType: 'JSON',
+                contentType: 'application/x-www-form-urlencoded;charset=utf-8',
+                beforeSend: function (XMLHttpRequest) {},
+                success: function (data) { //成功
+                    if (data.resultcode >= 0) {
+                        toastr.success('回复成功')
+                        getList('getLiuyan');
+                        setTimeout(() => {
+                            $('#msglist_' + i).removeClass('d-none').show();
+                        })
+
+                    } else if (data.resultcode == -2) {
+                        reLogin(data);
+                    } else {
+                        toastr.error('回复失败')
+                    }
+                    $('#reword_' + i).val('');
+                },
+                error: function (obj, msg, e) { //异常
+                    toastr.error('网络异常，回复失败')
+                }
+            });
+        }
+
+        //留言内容显示/隐藏
+        function msgToggle(i) {
+            if ($('#msglist_' + i).attr('class') == "w-100 d-none") {
+                $('#msglist_' + i).removeClass('d-none').show();
+            } else {
+                $('#msglist_' + i).toggle();
+            }
+
+        }
+
+        //编辑职位
+        function update(e) {
+            sessionStorage.setItem('updId', e);
+            window.location.href = document.URL.substring(0, document.URL.indexOf(
+                '')) + 'postJob.html#upd';
+        }
+        //删除记录
+        function remove(e, id) {
+            let url = httpUrl + '/admin/Web_Userc/delPosition/token/' + getToken();
+            var params = {
+                "type": e,
+                "id": id
+            }
+            // ajax请求
+            $.ajax({
+                type: 'POST', //请求方式
+                url: url, //请求路径 
+                data: JSON.stringify(params), //参数
+                dataType: 'JSON',
+                contentType: 'application/x-www-form-urlencoded;charset=utf-8',
+                beforeSend: function (XMLHttpRequest) {},
+                success: function (data) { //成功
+                    if (data.resultcode >= 0) {
+                        toastr.success('移除成功')
+                        if (e == 'sc') {
+                            getList('personalPosition');
+                        }
+                        if (e == 'td') {
+                            getList('getResume');
+                        }
+                        if (e == 'ly') {
+                            getList('getLiuyan');
+                        }
+                    } else if (data.resultcode == -2) {
+                        reLogin(data);
+                    } else {
+                        toastr.error('移除失败')
+                    }
+                },
+                error: function (obj, msg, e) { //异常
+                    toastr.error('网络异常')
+                }
+            });
+        }
+    </script>
+    <!-- jsRrender -->
+    <script id='scList' type="text/x-jsrender">
+        {{if list.length > 0}}
+            {{for list}}
+                <li class="item-boss">
+                    <div class="figure"><img
+                            src="{{:header_img}}">
+                    </div>
+                    <div class="item-content">
+                        <div class="info-header">
+                            <div class="info-header">
+                                <div class="btns"><a href="javascript:;"
+                                    class="btn btn-startchat" onclick="remove('sc',{{:id}})">移除</a>
+                                </div>
+                                <div class="btns"><a href="javascript:;"
+                                    class="btn btn-startchat" onclick="update({{:id}})">编辑</a>
+                                </div>
+                                <div class="job-info">
+                                    <div class="job-name">
+                                        <a href="javascript:void(0)" class="job-info" onclick="detail({{:id}})">
+                                            <span class="jobname">{{:name}}</span>
+                                            <span class="salary">{{:wages}}</span>
+                                        </a>
+                                    </div>
+                                    <p class="gray">{{:address}}<em class="vline"></em>{{:experience}}<em class="vline"></em>{{:xueli}}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+            {{/for}}
+        {{else}}
+            <img src="./img/on-data.jpg" width="250" height="250" style="margin:3rem 25.5rem;">
+        {{/if}}
+    </script>
+    <script id='lyList' type="text/x-jsrender">
+        {{if list.length > 0}}
+            {{for list}}
+                <li class="item-boss">
+                    <div class="figure">
+                        <img src="{{:header_img}}">
+                    </div>
+                    <div class="item-content">
+                        <div class="info-header">
+                            <div class="info-header">
+                                <div class="btns"><a href="javascript:;"
+                                    class="btn btn-startchat" onclick="remove('ly',{{:id}})">移除</a>
+                                </div>
+                                <div class="d-flex align-items-center">
+                                    <h3 class="name">{{:nickname}}</h3><em class="vline"></em>
+                                    {{if sex == '女'}}
+                                        <svg class="icon svg-icon-md" aria-hidden="true">
+                                            <use xlink:href="#iconnv"></use>
+                                        </svg>
+                                    {{else}}
+                                        <svg class="icon svg-icon-md" aria-hidden="true">
+                                            <use xlink:href="#iconnan"></use>
+                                        </svg>
+                                    {{/if}}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="info-primary info-primary-noninterview">
+                            <div class="job-info">
+                                <p class="gray">时间：{{:create_time}}</p>
+                                <p class="gray">内容：{{:liuyancontent}}
+                                    <a href="javascript:void(0)" class="job-info ckjl_{{:#getIndex()}}" onclick="msgToggle({{:#getIndex()}})"style="color:#54cbc4">
+                                        回复
+                                    </a>
+                                </p>
+                            </div>
+                            <div class="w-100 d-none" id="msglist_{{:#getIndex()}}" style="min-height:100px;">
+                                <div class="job-info px-5">
+                                    {{for children}}
+                                        <p class="gray">{{>create_time}}&nbsp;我：{{>liuyancontent}}</p>
+                                        {{if reply_conten!=null}}
+                                            <p class="nogray">{{>reply_time}}&nbsp;{{:reply_name}}：{{>reply_content}}</p>
+                                        {{/if}}
+                                        <p class="hline"></p>
+                                    {{/for}}
+                                    <form data-toggle="validator" role="form" onsubmit="return false" class="tab-pane fade show"
+                                        id="rewordForm_{{:#getIndex()}}" role="tabpanel" aria-labelledby="find-tab">
+                                        <p class="gray">回复留言：</p>
+                                        <textarea rows="2" class="form-control" placeholder="请保持言论文明：" required id="reword_{{:#getIndex()}}"></textarea>
+                                        <button type="submit" class="submit btn btn-info f-r my-2" onclick="reply({{:#getIndex()}},{{:id}})">Send</button>
+                                    </form>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </li>
+            {{/for}}
+        {{else}}
+            <img src="./img/on-data.jpg" width="250" height="250" style="margin:3rem 25.5rem;">
+        {{/if}}
+    </script>
+    <script id='tdList' type="text/x-jsrender">
+        {{if list.length > 0}}
+            {{for list}}
+                <li class="item-boss">
+                    <div class="figure"><img
+                            src="{{:header_img}}">
+                    </div>
+                    <div class="item-content">
+                        <div class="info-header">
+                            <div class="info-header">
+                                <div class="btns"><a href="javascript:;"
+                                    class="btn btn-startchat" onclick="remove('td',{{:id}})">移除</a>
+                                </div>
+                                <div class="d-flex align-items-center">
+                                    <h3 class="name">{{:nickname}}</h3><em class="vline"></em>
+                                    {{if sex == '女'}}
+                                        <svg class="icon svg-icon-md" aria-hidden="true">
+                                            <use xlink:href="#iconnv"></use>
+                                        </svg>
+                                    {{else}}
+                                        <svg class="icon svg-icon-md" aria-hidden="true">
+                                            <use xlink:href="#iconnan"></use>
+                                        </svg>
+                                    {{/if}}<em class="vline"></em>
+                                    <a href="{{:file_url}}">
+                                        <svg class="icon svg-icon-sm" aria-hidden="true">
+                                            <use xlink:href="#iconxiazai"></use>
+                                        </svg> 接收简历
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="info-primary info-primary-noninterview">
+                            <div class="job-info">
+                                <p>期望工作：</p>
+                                <div class="job-name px-2">
+                                    <a href="javascript:void(0)" class="job-info" onclick="detail({{:position_id}})">
+                                        <span class="jobname">{{:name}}</span>
+                                        <span class="salary">{{:wages}}</span>
+                                    </a>
+                                </div>
+                                <p class="gray px-2">{{:address}}<em class="vline"></em>{{:experience}}<em class="vline"></em>{{:xueli}}</p>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+            {{/for}}
+        {{else}}
+            <img src="./img/on-data.jpg" width="250" height="250" style="margin:3rem 25.5rem;">
+        {{/if}}
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,57 @@
+.header {
+    background: #00d7c6;
+    color: #333;
+    min-height: 50px;
+    /* min-width: 1201px; */
+}
+
+.nav-link {
+    color: #fff;
+    font-size: 1.1rem;
+    font-weight: 400;
+}
+
+.nav-link:hover {
+    color: #17a2b8;
+}
+
+/* 文件上传按钮css */
+.uploadclass {
+    margin-bottom: 0px;
+    color: #17a2b8;
+    background-color: transparent;
+    background-image: none;
+    border: 1px solid #17a2b8;
+    padding: 4px 50px;
+    border-radius: 3px;
+}
+
+.uploadclass:hover {
+    background-color: #17a2b8;
+    color: #fff;
+}
+
+.clsp {
+    position: absolute !important;
+    z-index: 9 !important;
+    width: 100px !important;
+    right: 100px !important;
+    text-align: center;
+}
+.clsp ul li:not(:last-child) {
+    margin-bottom: 10px;
+}
+.clsp ul li a {
+    color: #333;
+    cursor: pointer;
+}
+.clsp ul li a:hover {
+    color: #00d7c6;
+}
+
+.uplaodCs {
+    color: #333 !important;
+}
+.uplaodCs:hover {
+    color: #00bb97 !important;
+}

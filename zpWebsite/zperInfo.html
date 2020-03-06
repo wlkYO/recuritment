@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1, shrink-to-fit=no, maximum-scale=1.0, user-scalable=no">
+    <!-- <link rel="shortcut icon" href="favicon.ico" /> -->
+    <!-- Bootstrap CSS -->
+    <title>吧啦吧啦招聘网</title>
+
+    <link rel="stylesheet" href="css/header.css">
+    <link rel="stylesheet" href="css/footer.css">
+    <link rel="stylesheet" href="css/base.css">
+    <link rel="stylesheet" href="css/home.css">
+    <link rel="stylesheet" href="css/registe.css">
+    <link rel="stylesheet" href="css/common.css">
+    <link rel="stylesheet" href="css/toastr.min.css">
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="./iconfont/iconfont.css">
+</head>
+
+<body>
+    <div id="header"></div>
+    <div class="main-body p-5">
+        <form data-toggle="validator" role="form" onsubmit="return false" class="tab-pane fade show" id="find"
+            role="tabpanel" aria-labelledby="find-tab">
+            <div class="pl-5 py-2">
+                <h6>公司信息.补全</h6>
+            </div>
+            <div class="row px-5">
+                <div class="form-group col-6">
+                    <label for="inputEmail" class="control-label">公司全称</label>
+                    <input type="text" class="form-control" id="companyNam" placeholder="填写完整的公司全称" required>
+                </div>
+                <div class="form-group col-6">
+                    <label for="inputEmail" class="control-label">地址</label>
+                    <fieldset>
+                        <label for="addr-show02" class="w-100">
+                            <input type="text" class="form-control" id="addr-show02" style="background-color: #fff;"
+                                placeholder="填写详细的公司地址" required>
+                        </label>
+                        <div id="addr">
+                            <div id="addr-choice">
+                                <ul id="title-wrap">
+                                    <li value="0">省份</li>
+                                    <li value="1">城市</li>
+                                    <li value="2">县区</li>
+                                </ul>
+                                <div id="show-panel">
+                                    <ul id="addr-wrap">
+                                    </ul>
+                                </div>
+                            </div>
+                            <button type="button" class="btn met2 ml-2 mb-2">确定</button>
+                        </div>
+
+                    </fieldset>
+                </div>
+                <div class="form-group col-6">
+                    <label for="inputEmail" class="control-label">联系电话</label>
+                    <input class="form-control" id="companyPhone" type="text"
+                        onkeyup="value=value.replace(/[^\d\-\d]/g,'')" maxlength='20' placeholder="填写固定电话号码"
+                        required></input>
+                </div>
+                <div class="form-group col-12">
+                    <label for="inputEmail" class="control-label">公司介绍</label>
+                    <textarea rows="8" class="form-control" id="companyInfo" placeholder="公司介绍" required></textarea>
+                </div>
+            </div>
+            <div class="pl-5 py-2">
+                <h6>招聘者信息.补全</h6>
+            </div>
+            <div class="row px-5">
+                <div class="form-group col-6">
+                    <label for="inputEmail" class="control-label">姓氏</label>
+                    <input type="text" class="form-control" id="zperNam" placeholder="您的姓氏或昵称" required>
+                </div>
+                <div class="form-group col-6">
+                    <label for="inputEmail" class="control-label">性别</label>
+                    <form action="" method="get">
+                        <div class="form-control" style="border:0;">
+                            <label class="mr-5"><input type="radio" name="sex" value="1" checked />
+                                <svg class="icon svg-icon-md" aria-hidden="true">
+                                    <use xlink:href="#iconnan"></use>
+                                </svg>
+                            </label>
+                            <label><input type="radio" name="sex" value="2" />
+                                <svg class="icon svg-icon-md" aria-hidden="true">
+                                    <use xlink:href="#iconnv"></use>
+                                </svg>
+                            </label>
+                        </div>
+                    </form>
+
+                </div>
+                <div class="form-group col-6">
+                    <label for="inputEmail" class="control-label">职位</label>
+                    <input type="text" class="form-control" id="zperPosition" placeholder="您的职位" required>
+                </div>
+                <div class="form-group col-6 d-flex flex-column">
+                    <label for="inputEmail" class="control-label">上传头像</label>
+                    <div>
+                        <img src="./img/default.png" class="d-none" width="50px" height="50px" id="headerImg">
+                        <label class="uploadclass" style="padding: 3px 23px;">+
+                            <input type="file" onchange="uploadImg()" style="display: none;" />
+                        </label>
+                    </div>
+                </div>
+                <div class="form-group col-6">
+                    <label for="inputEmail" class="control-label">个性签名</label>
+                    <textarea rows="3" class="form-control" id="zperSign" placeholder="个性签名"></textarea>
+                </div>
+            </div>
+            <button type="submit" class="submit btn btn-info ml-5" onclick="onSubmit()">确认</button>
+        </form>
+    </div>
+    <div id="footer"></div>
+
+    <script type="text/javascript" src="js/jquery.min.js"></script>
+    <script src="./js/common.js"></script>
+    <script src="./js/jquery-3.3.1.min.js"></script>
+    <script src="./js/toastr.min.js"></script>
+    <script src="./js/bootstrap.min.js"></script>
+    <script src="./js/jsrender.js"></script>
+    <script src="./js/header.js"></script>
+    <script src="./js/city.js"></script>
+    <script src="./iconfont/iconfont.js"></script>
+    <script src="./js/methodCity.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            if (!isDataValid(JSON.parse(sessionStorage.getItem('company_id'))) && isDataValid(JSON.parse(
+                    sessionStorage.getItem('token')))) {
+                toastr.error('您还未完善公司信息，请先补全信息。')
+            }
+            getPersonInfo();
+        })
+        var dist;
+        //招聘者信息
+        function getPersonInfo() {
+            let url = httpUrl + '/admin/Web_Userc/personalCenter/token/' + getToken();
+            $.ajax({
+                type: 'get', //请求方式
+                url: url, //请求路径 
+                dataType: 'JSON',
+                contentType: 'application/x-www-form-urlencoded;charset=utf-8',
+                beforeSend: function (XMLHttpRequest) {},
+                success: function (data) {
+                    if (data.resultcode >= 0) { // 成功
+                        var d = data.data[0];
+                        isDataValid(d.company_name) ? dist = 1 : dist = 0;
+                        $('#companyNam').val(d.company_name);
+                        $('#addr-show02').val(d.register_addr);
+                        $('#companyPhone').val(d.company_phone);
+                        $('#companyInfo').val(d.company_introduce);
+                        $('#zperNam').val(d.nickname);
+                        $("input[name='sex']").each(function (i) {
+                            if (d.sex == '男') {
+                                $("input[name='sex']").get(0).checked = true;
+                            } else {
+                                $("input[name='sex']").get(1).checked = true;
+                            }
+                        })
+                        $('#zperPosition').val(d.position);
+                        $('#zperSign').val(d.mark);
+
+
+                        $('#headerImg').attr('src', d.header_img);
+                        isDataValid(d.header_img) ? $('#headerImg').removeClass('d-none') : '';
+                    } else {
+                        if (data.resultcode == -2) {
+                            reLogin(data);
+                        } else {
+                            toastr.error('网络异常');
+                        }
+                    }
+                },
+                error: function (obj, msg, e) { //异常
+                    toastr.error('网络异常');
+                }
+            });
+        }
+        // 上传头像文件
+        function uploadImg() {
+            var fileList = event.target.files;
+            var url = httpUrl + '/admin/Uploadc/upload';
+            if (fileList.length > 0) {
+                var file;
+                file = fileList[0];
+                // 通过FormData将文件转成二进制数据
+                let formData;
+                formData = new FormData();
+                formData.append('file', file, file.name);
+                // ajax请求
+                $.ajax({
+                    type: 'POST', //请求方式
+                    url: url, //请求路径 
+                    data: formData, //参数
+                    cache: false,
+                    processData: false,
+                    contentType: false,
+                    beforeSend: function (XMLHttpRequest) {},
+                    success: function (data) { //成功
+                        if (data.resultcode >= 0) {
+                            $('#headerImg').attr('src', data.data.url);
+                            toastr.success('预览头像成功');
+                            $('#headerImg').removeClass('d-none');
+                        } else {
+                            toastr.error('上传头像失败');
+                            $('#headerImg').addClass('d-none');
+                            $('#headerImg').attr('src', '');
+                        }
+                    },
+                    error: function (obj, msg, e) { //异常
+                        toastr.error('上传头像失败');
+                        $('#headerImg').addClass('d-none');
+                        $('#headerImg').attr('src', '');
+                    }
+                });
+            }
+        }
+
+        function onSubmit() {
+            if (!isDataValid($('#companyNam').val()) || !isDataValid($('#addr-show02').val()) ||
+                !isDataValid($('#companyPhone').val()) || !isDataValid($('#companyInfo').val()) ||
+                !isDataValid($('#zperNam').val()) || !isDataValid($('#zperPosition').val())) {
+                return;
+            }
+            let url = httpUrl + '/admin/Web_Userc/adddetail/token/' + getToken();
+            let params = {
+                "company_name": $('#companyNam').val(),
+                "register_addr": $('#addr-show02').val(),
+                "company_phone": $('#companyPhone').val(),
+                "company_introduce": $('#companyInfo').val(),
+                "nickname": $('#zperNam').val(),
+                "sex": $('input:radio:checked').val(),
+                "position": $('#zperPosition').val(),
+                "header_img": $('#headerImg').is('.d-none') ? '' : $('#headerImg')[0].src,
+                "mark": $('#zperSign').val(),
+                "method": dist == 1 ? 'update' : 'add'
+            };
+            $.ajax({
+                type: 'POST', //请求方式
+                url: url, //请求路径 
+                data: JSON.stringify(params), //参数
+                dataType: 'JSON',
+                contentType: 'application/x-www-form-urlencoded;charset=utf-8',
+                beforeSend: function (XMLHttpRequest) {},
+                success: function (data) {
+                    if (data.resultcode >= 0) { // 成功
+                        toastr.success(data.resultmsg + ',即将跳转重新登录...');
+                        setTimeout(() => {
+                            window.location.href = document.URL.substring(0, document.URL.indexOf(
+                                    '')) +
+                                'login.html';
+                        }, 1000)
+
+                    } else if (data.resultcode == -2) {
+                        reLogin(data);
+                    } else {
+                        toastr.error('网络异常')
+                    }
+                },
+                error: function (obj, msg, e) { //异常
+                    toastr.error('网络异常')
+                }
+            });
+        }
+    </script>
+</body>
+
+</html>

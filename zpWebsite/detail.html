@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<!-- Required meta tags -->
+	<meta charset="utf-8">
+	<meta name="viewport"
+		content="width=device-width, initial-scale=1, shrink-to-fit=no, maximum-scale=1.0, user-scalable=no">
+	<!-- <link rel="shortcut icon" href="favicon.ico" /> -->
+	<!-- Bootstrap CSS -->
+	<title>吧啦吧啦招聘网</title>
+
+	<link rel="stylesheet" href="css/bootstrap.min.css">
+	<link rel="stylesheet" href="css/base.css">
+	<link rel="stylesheet" href="css/home.css">
+	<link rel="stylesheet" href="css/common.css">
+	<link rel="stylesheet" href="css/header.css">
+	<link rel="stylesheet" href="css/footer.css">
+	<link rel="stylesheet" href="css/toastr.min.css">
+	<link rel="stylesheet" href="./iconfont/iconfont.css">
+
+	<script type="text/javascript" src="js/jquery.min.js"></script>
+	<script src="./js/jquery-3.3.1.min.js"></script>
+	<script src="./js/common.js"></script>
+	<script src="./js/header.js"></script>
+	<script src="./js/bootstrap.min.js"></script>
+	<script src="./js/toastr.min.js"></script>
+	<script src="./iconfont/iconfont.js"></script>
+	<script src="./js/jsrender.js"></script>
+</head>
+
+<body>
+	<div id="header"></div>
+	<!-- 侧边栏 -->
+	<div id="tab_bar"></div>
+	<div id="tab_bar_zp"></div>
+	<div class="main-body">
+		<div class="startchat">
+			<div class="startchat-triangle"></div>
+			<div class="" style="width: 100%;height:90%;padding-top:15px ">
+				<form data-toggle="validator" role="form" onsubmit="return false" class="tab-pane fade show"
+					id="wordForm" role="tabpanel" aria-labelledby="find-tab">
+
+				</form>
+			</div>
+		</div>
+		<div class="job-banner">
+			<div class="inner home-inner">
+				<div class="job-primary detail-box">
+					<div class="info-primary" id="info-primary">
+						<!-- jsrender -->
+					</div>
+					<div class="job-op d-none">
+						<div class="btn-container">
+							<a class="btn btn-more mr-2" id='SendResume' onclick="sendResume()"
+								style="color: #fff">投递简历</a>
+							<a class="btn btn-startchat" href="javascript:void(0);">我要留言</a>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="job_detail d-flex jusitify-content-start align-item-center">
+			<div id="detail-op">
+				<!-- jsrender -->
+			</div>
+
+			<div class="job-sider">
+				<div class="promotion-job">
+					<h3>相似职位</h3>
+					<ul class="similarJob">
+						<!-- jsrender -->
+					</ul>
+					<div class="view-more"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div id="footer"></div>
+
+	<script type="text/javascript">
+		var newlists = JSON.parse(localStorage.getItem('detail'));
+		var hImg = JSON.parse(sessionStorage.getItem('header_img'));
+		var nname = JSON.parse(sessionStorage.getItem('nickname'));
+		var sex = JSON.parse(sessionStorage.getItem('sex'));
+		$(function () {
+			newlists.map((item) => {
+				item['create_user'] = item['nickname'] + (item['sex'] == '男' ?
+					"先生" : '女士'); //称谓
+			})
+			var template1 = $.templates('#oneDetail');
+			var template2 = $.templates('#theDetail');
+			var template3 = $.templates('#theWord');
+			$('#info-primary').html(template1.render(newlists));
+			$('#detail-op').html(template2.render(newlists));
+			$('#wordForm').html(template3.render(newlists));
+
+			//求职者 加入喜欢
+			setTimeout(() => {
+				var r = sessionStorage.getItem('role');
+				if (r == 3) {
+					$('.to-like').click(function () {
+						if (!isDataValid(hImg) || !isDataValid(nname) || !isDataValid(sex)) {
+							toastr.warning('请先完善个人信息');
+							setTimeout(() => {
+								window.location.href = document.URL.substring(0, document.URL
+									.indexOf(
+										'')) + 'finderInfo.html';
+							}, 1000);
+							return;
+						}
+						let url = httpUrl + '/admin/Web_Userc/collection/token/' + getToken();
+						var params = {
+							"position_id": newlists[0]['id']
+						}
+						if (!isDataValid(params.position_id)) {
+							return;
+						}
+						// ajax请求
+						$.ajax({
+							type: 'POST', //请求方式
+							url: url, //请求路径 
+							data: JSON.stringify(params), //参数
+							dataType: 'JSON',
+							contentType: 'application/x-www-form-urlencoded;charset=utf-8',
+							beforeSend: function (XMLHttpRequest) {},
+							success: function (data) { //成功
+								if (data.resultcode >= 0) {
+									toastr.success('收藏成功')
+								} else if (data.resultcode == -2) {
+									reLogin(data);
+								} else {
+									toastr.error(data.resultmsg)
+								}
+							},
+							error: function (obj, msg, e) { //异常
+								$('.startchat').hide();
+								toastr.error('网络异常')
+							}
+						});
+					})
+				}
+			}, 100)
+
+			getSimilarJob(newlists[0].company_id, newlists[0].industry); //相似职位推荐
+		});
+
+		//留言
+		function wordSend() {
+			let url = httpUrl + '/admin/Web_Userc/releaseLiuyan/token/' + getToken();
+			var params = {
+				"position_id": newlists[0]['id'],
+				"liuyancontent": $('#word').val(),
+				"company_id": newlists[0]['company_id'],
+			}
+			if (!isDataValid(params.liuyancontent)) {
+				return;
+			}
+			if (!isDataValid(hImg) || !isDataValid(nname) || !isDataValid(sex)) {
+				toastr.warning('请先完善个人信息');
+				setTimeout(() => {
+					window.location.href = document.URL.substring(0, document.URL
+						.indexOf(
+							'')) + 'finderInfo.html';
+				}, 1000);
+				return;
+			}
+			// ajax请求
+			$.ajax({
+				type: 'POST', //请求方式
+				url: url, //请求路径 
+				data: JSON.stringify(params), //参数
+				dataType: 'JSON',
+				contentType: 'application/x-www-form-urlencoded;charset=utf-8',
+				beforeSend: function (XMLHttpRequest) {},
+				success: function (data) { //成功
+					if (data.resultcode >= 0) {
+						toastr.success('留言成功')
+					} else if (data.resultcode == -2) {
+						reLogin(data);
+					} else {
+						toastr.error('留言失败')
+					}
+					$('.startchat').hide();
+				},
+				error: function (obj, msg, e) { //异常
+					$('.startchat').hide();
+					toastr.error('网络异常')
+				}
+			});
+		}
+		//投递简历
+		function sendResume() {
+			var l = JSON.parse(sessionStorage.getItem('is_upload'));
+			var t = JSON.parse(sessionStorage.getItem('token'));
+			if (!isDataValid(t)) {
+				toastr.warning('请先登录～');
+				setTimeout(() => {
+					window.location.href = document.URL.substring(0, document.URL.indexOf(
+						'')) + 'login.html';
+				}, 1000)
+			} else {
+				if (!isDataValid(hImg) || !isDataValid(nname) || !isDataValid(sex)) {
+					toastr.warning('请先完善个人信息');
+					setTimeout(() => {
+						window.location.href = document.URL.substring(0, document.URL.indexOf(
+							'')) + 'finderInfo.html';
+					}, 1000);
+					return;
+				}
+				if (l == 0) {
+					toastr.warning('请先上传简历～');
+					return;
+				}
+				let url = httpUrl + '/admin/Web_Userc/delivery/token/' + getToken();
+				var params = {
+					"position_id": newlists[0]['id'],
+				}
+				$.ajax({
+					type: 'POST', //请求方式
+					url: url, //请求路径 
+					data: JSON.stringify(params), //参数
+					dataType: 'JSON',
+					contentType: 'application/x-www-form-urlencoded;charset=utf-8',
+					beforeSend: function (XMLHttpRequest) {},
+					success: function (data) { //成功
+						if (data.resultcode >= 0) {
+							toastr.success('投递成功')
+						} else if (data.resultcode == -2) {
+							reLogin(data);
+						} else {
+							toastr.error(data.resultmsg)
+						}
+					},
+					error: function (obj, msg, e) { //异常
+						toastr.error('网络异常')
+					}
+				});
+			}
+		}
+
+		//相似职位推荐
+		function getSimilarJob(id, e) {
+			let url = httpUrl + '/admin/Web_Userc/getPosition/page/' + 1 + '/pagesize/' + 9999999 + '/name/' + e;
+			$.ajax({
+				type: 'get', //请求方式
+				url: url, //请求路径 
+				dataType: 'JSON',
+				contentType: 'application/x-www-form-urlencoded;charset=utf-8',
+				beforeSend: function (XMLHttpRequest) {},
+				success: function (data) {
+					if (data.resultcode >= 0) { // 成功
+						var d = data.data.list.slice(0, 8);
+						d.length > 0 ? d.map((item, i) => {
+							// item['company_name'] = item['company_name'].split('有限公司')[
+							// 	0]; //公司简称
+							if (d[i].company_id == id) {
+								d.splice(i, 1);
+							}
+							item['create_user'] = item['nickname'] + (item['sex'] == '男' ?
+								"先生" : '女士'); //称谓
+						}) : '';
+						var template = $.templates('#similarLists');
+						$('.similarJob').html(template.render(d));
+					} else {
+						toastr.error('网络异常');
+					}
+				},
+				error: function (obj, msg, e) { //异常
+					toastr.error('网络异常');
+				}
+			});
+		}
+	</script>
+	<!-- jsRrender -->
+	<script id='oneDetail' type="text/x-jsrender">
+		<div class="job-status">招聘中</div>
+			<div class="name">
+				<h1>{{:name}}</h1>
+				<span class="salary">{{:wages}}</span>
+			</div>
+				<p>
+					{{:address}}
+					<em class="dolt"></em>
+					{{:experience}}
+					<em class="dolt"></em>
+					{{:xueli}}
+				</p>
+			<div class="tag-container">
+				<div class="job-tags">
+					{{for welfare}}
+						<span>{{:#data}}</span>
+					{{/for}}
+				</div>
+			</div>
+		</div>
+	</script>
+	<script id='theDetail' type="text/x-jsrender">
+		<div class="detail-op">
+			<div class="btns">
+				<div class="op-links d-none">
+					<a href="javascript:void(0);" class="link-like to-like">
+						<svg class="icon svg-icon-md" aria-hidden="true">
+                            <use xlink:href="#iconshoucang1"></use>
+                        </svg>感兴趣</a>
+				</div>
+			</div>
+
+			<div class="detail-figure">
+				<img src="{{:header_img}}" alt="">
+			</div>
+			<h2 class="name">
+				{{:create_user}}
+			</h2>
+			<p class="gray">
+				{{:position}}
+			</p>
+		</div>
+		<div class="detail-op">
+			<div class="job-sec">
+				<h3>职位描述</h3>
+				<div class="text">
+					{{> position_detail}}
+				</div>
+			</div>
+			<div class="job-sec company-info">
+				<h3>公司介绍</h3>
+				<div class="text">
+					{{> company_introduce}}
+				</div>
+			</div>
+			<div class="job-sec">
+				<h3>工商信息</h3>
+				<div class="job-location text">
+					<div class="location-address">{{:company_name}}</div>
+				</div>
+			</div>
+			<div class="job-sec">
+				<h3>工作地址</h3>
+				<div class="job-location text">
+					<div class="location-address">{{:address}}&nbsp;{{:address_detail}}</div>
+				</div>
+			</div>
+			<div class="job-sec">
+				<h3>公司电话</h3>
+				<div class="job-location text">
+					<div class="location-address">{{:company_phone}}</div>
+				</div>
+			</div>
+		</div>
+	</script>
+	<script id='theWord' type="text/x-jsrender">
+		<div class="form-group col-12">
+			<label class="control-label">{{:create_user}}：</label>
+			<textarea rows="7" class="form-control" id="word" placeholder="请保持言论文明：" required></textarea>
+		</div>
+		<button type="submit" class="submit btn btn-info" onclick="wordSend()" style="margin-right: 15px;float: right;">Send</button>
+	</script>
+	<script id='similarLists' type="text/x-jsrender">
+		<li>
+			<div class="company-logo">
+				<img src="{{:header_img}}"
+					alt="">
+			</div>
+			<div class="job-info">
+				<div class="job-name">
+					<a href="javascript:void(0);" class="job-info" onclick="detail({{:id}})">
+						<span class="jobname">{{:name}}</span>
+						<span class="salary">{{:wages}}</span>
+					</a>
+				</div>
+				<p class="gray">{{:address}}<em class="vline"></em>{{:experience}}<em class="vline"></em>{{:xueli}}</p>
+			</div>
+		</li>
+	</script>
+</body>
+
+</html>

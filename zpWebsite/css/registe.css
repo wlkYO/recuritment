@@ -1,0 +1,138 @@
+.form-body {
+    position: absolute;
+    width: auto;
+    height: auto;
+    padding: 20px 40px;
+    right: 10%;
+    background: #f8f9fa;
+    border-radius: 8px;
+    box-shadow: inset 0 0 15px rgba(0, 0, 0, 0.2);
+}
+
+/* 密码强度验证 */
+.intension div {
+    background-color: #e8e8e8;
+    width: 90px;
+    height: 20px;
+    text-align: center;
+    line-height: 20px;
+    margin: 5px;
+    float: left;
+    font-size: 10px;
+}
+
+.intension {
+    /* width: 270px; */
+    /* margin-left: 40px */
+}
+
+.intension .active {
+    background-color: #15a2b8;
+}
+
+.intension .danger {
+    background-color: red;
+}
+
+/* 滑块验证 */
+.drag {
+    position: relative;
+    background-color: #e8e8e8;
+    width: 300px;
+    height: 34px;
+    line-height: 34px;
+    text-align: center;
+    margin: 30px 0 10px auto;
+}
+
+.drag .handler {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    width: 40px;
+    height: 34.6px;
+    border: 1px solid #ccc;
+    cursor: move;
+}
+
+.handler_bg {
+    background: #fff url("../img/arrow.png") no-repeat center;
+}
+
+.handler_ok_bg {
+    background: #fff url("../img/arrow.png") no-repeat center;
+}
+
+.drag .drag_bg {
+    background-color: #7ac23c;
+    height: 34px;
+    width: 0px;
+}
+
+.drag .drag_text {
+    position: absolute;
+    top: 0px;
+    width: 300px;
+}
+
+/* 注册页面自定义样式 */
+
+.nav-tabs {
+    margin: 0 auto 1rem !important;
+}
+
+.nav-tabs .nav-item.show .nav-link,
+.nav-tabs .nav-link.active {
+    color: #17a2b8!important;
+    background-color: transparent !important;
+    border-color: 0px !important;
+    /* border-bottom: 2px solid #17a2b8 !important; */
+}
+
+/* .nav-item:hover .nav-link:after {
+    width: 100px;
+    will-change: width;
+} */
+
+.active:after {
+    width: 100px !important;
+}
+
+.nav-tabs .nav-link:after {
+    content: "";
+    position: relative;
+    display: block;
+    margin: 0 auto;
+    width: 0;
+    height: 2px;
+    /* top: -6px; */
+    /* -webkit-transition: width .4s ease-in-out;
+    -o-transition: width .4s ease-in-out;
+    transition: width .4s ease-in-out; */
+    background: #17a2b8;
+}
+
+.nav-tabs .nav-link {
+    border: 0 !important;
+}
+
+.active {
+    color: #333 !important;
+}
+
+.nav-link:hover {
+    color: #17a2b8 !important;
+}
+
+.nav-item .nav-link .tit {
+    margin: 0 20px; 
+    /* color: #17a2b8 !important; */
+}
+
+.nav-tabs {
+    border: 0 !important;
+}
+
+.nav-link {
+    margin-right: 0 !important;
+}

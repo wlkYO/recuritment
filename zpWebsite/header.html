@@ -1,0 +1,91 @@
+<header class="header">
+    <!-- 头部菜单 -->
+    <div class="header d-flex align-items-center justify-content-between">
+        <ul class="nav align-items-center justify-content-end" id="header-lf">
+            <div class="header-logo-sec m-md-0 m-auto">
+                <img class="logo" src="./img/zp-header.png" />
+            </div>
+            <li class="nav-item">
+                <a class="nav-link" href="./index.html">首页</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="./position.html">职位</a>
+            </li>
+        </ul>
+        <div class="" id='header-rt'>
+            <ul class="nav align-items-center justify-content-end mx-5 d-none" id="noToken">
+                <li class="nav-item">
+                    <a class="nav-link" id="wantfind" href="./registe.html#find">我要找工作</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" id="wantzp" href="./registe.html#zp">我要招聘</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" id="needlg" href="./login.html">登录</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" id="needrg" href="./registe.html#find">注册</a>
+                </li>
+            </ul>
+            <ul class="nav align-items-center justify-content-end mx-5 d-none" id="haveToken2">
+                <li class="nav-item">
+                    <a href="javascript:void(0)" class="nav-link c-cursor-p" id="wantfb" onclick="wantfb()">发布职位</a>
+                </li>
+                <img width="30px" height="30px" src='./img/default.png' class="rounded-circle c-cursor-p"
+                    data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false"
+                    aria-controls="collapseExample" />
+                <span id="zperName" class="c-cursor-p" data-toggle="collapse" href="#collapseExample"
+                aria-expanded="false" aria-controls="collapseExample"></span>
+            </ul>
+            <ul class="nav align-items-center justify-content-end mx-5 d-none" id="haveToken3">
+                <li class="nav-item">
+                    <a href="javascript:void(0)" class="nav-link c-cursor-p uplaodCs" id='download' onclick="downloadJl()">查看简历</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link c-cursor-p uplaodCs" href="javascript:void(0)" id='upload' data-toggle="modal"
+                        data-target="#exampleModalCenter">上传简历</a>
+                </li>
+                <img width="30px" height="30px" src='./img/default.png' class="rounded-circle c-cursor-p"
+                    data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="true"
+                    aria-controls="collapseExample" />
+                <span id="yperName" class="c-cursor-p" data-toggle="collapse" href="#collapseExample"
+                    aria-expanded="false" aria-controls="collapseExample"></span>
+            </ul>
+        </div>
+    </div>
+    <!-- 点击头像展开个人信息导航 -->
+    <div class="collapse clsp" id="collapseExample">
+        <div class="card card-body">
+            <ul>
+                <li><a class="uplaodCs c-cursor-p" id="uploadInfo" onclick="uploadInfo()">修改信息</a></li>
+                <li><a href="./login.html">退出登录</a></li>
+            </ul>
+        </div>
+    </div>
+    <!-- Modal 弹框 -->
+    <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog"
+        aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content" style="color: #333">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalCenterTitle">上传简历</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body d-flex flex-column justify-content-between align-items-center">
+                    <span>
+                        支持DOC、DOCX、PDF、JPG、PNG格式附件
+                    </span>
+                    <span>
+                        文件大小不超过8M
+                    </span>
+                    <label class="uploadclass">
+                        上传简历附件
+                        <input type="file" onchange="uploadFile()" style="display: none;" />
+                    </label>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>

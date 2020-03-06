@@ -1,0 +1,909 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1, shrink-to-fit=no, maximum-scale=1.0, user-scalable=no">
+    <!-- <link rel="shortcut icon" href="favicon.ico" /> -->
+    <!-- Bootstrap CSS -->
+    <title>吧啦吧啦招聘网</title>
+
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/base.css">
+    <link rel="stylesheet" href="css/home.css">
+    <link rel="stylesheet" href="css/common.css">
+    <link rel="stylesheet" href="css/toastr.min.css">
+    <link rel="stylesheet" href="css/pagination.css">
+    <link rel="stylesheet" href="./iconfont/iconfont.css">
+    <style>
+        .head {
+            position: fixed;
+            width: 100%;
+            z-index: 9;
+        }
+
+        .body {
+            position: relative;
+            top: 50px;
+            overflow-x: hidden;
+            padding-top: 7px;
+        }
+
+        .body-menu {
+            position: fixed;
+            min-width: 235px;
+            z-index: 9;
+            padding-left: 0;
+            margin-top: -7px;
+            padding-top: 7px;
+            height: 100%;
+            background: #f5f5f5;
+        }
+
+        .body_content {
+            position: relative;
+            left: 235px;
+        }
+
+        .modal-body input {
+            width: 200px;
+            height: 30px;
+        }
+
+        .modal-body span {
+            white-space: nowrap;
+        }
+
+        .modal-body .badge:hover {
+            color: #fff;
+            background-color: #2a85f3;
+        }
+
+        .modal-body .ptype {
+            padding: 0 6rem;
+        }
+
+        .modal-body .uploadclass {
+            width: 50px;
+            height: 20px;
+            line-height: 17px;
+            padding-left: 20px;
+            border: 1px solid #1a74e2;
+            border-radius: 2px;
+        }
+
+        #admin-header {
+            background: #dee2e6;
+            color: #495057;
+            min-height: 50px;
+        }
+
+        #admin-header p:hover {
+            color: #007aff;
+        }
+
+        .list-group .active {
+            color: #ededed !important;
+        }
+
+        .row {
+            margin-left: 0px;
+            margin-right: 0px;
+        }
+
+        table {
+            color: #63696f;
+        }
+
+        .table td,
+        .table th {
+            vertical-align: middle;
+        }
+
+        .cz-link {
+            color: #63696f;
+            margin-right: 5px;
+        }
+
+        .cz-link:hover {
+            color: #007aff;
+        }
+
+        .clsp {
+            position: fixed;
+            z-index: 9 !important;
+            width: 100px !important;
+            right: 35px !important;
+            text-align: center;
+            top: 50px;
+        }
+
+        .list-group-item {
+            background-color: transparent;
+            border-width: 1px 0;
+        }
+
+        .pagination {
+            padding: .8rem 0;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="row head">
+        <div id="admin-header" class="col-12 d-flex align-items-center justify-content-between pr-5">
+            <h3><svg class="icon svg-icon-md" aria-hidden="true">
+                    <use xlink:href="#iconguanliyuan"></use>
+                </svg>
+                管理员页面</h3>
+            <p class="c-cursor-p" data-toggle="collapse" href="#collapseExample" aria-expanded="false"
+                aria-controls="collapseExample">欢迎您，管理员</p>
+        </div>
+    </div>
+    <!-- 点击头像展开个人信息导航 -->
+    <div class="collapse clsp" id="collapseExample">
+        <div class="card card-body">
+            <ul>
+                <li><a href="./login.html">退出登录</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="row body">
+        <div class="col-2 body-menu">
+            <div class="list-group" id="list-tab" role="tablist">
+                <a class="list-group-item list-group-item-action active" id="list-yh-list" data-toggle="list"
+                    href="#list-yh" role="tab" aria-controls="yh">用户管理</a>
+                <a class="list-group-item list-group-item-action" id="list-zw-list" data-toggle="list" href="#list-zw"
+                    role="tab" aria-controls="zw">职位管理</a>
+                <a class="list-group-item list-group-item-action" id="list-zwlx-list" data-toggle="list"
+                    href="#list-zwlx" role="tab" aria-controls="zwlx">职位类型管理</a>
+                <a class="list-group-item list-group-item-action" id="list-jl-list" data-toggle="list" href="#list-jl"
+                    role="tab" aria-controls="jl">简历管理</a>
+                <a class="list-group-item list-group-item-action" id="list-ly-list" data-toggle="list" href="#list-ly"
+                    role="tab" aria-controls="ly">留言管理</a>
+                <a class="list-group-item list-group-item-action" id="list-gg-list" data-toggle="list" href="#list-gg"
+                    role="tab" aria-controls="gg">广告管理</a>
+            </div>
+        </div>
+        <div class="col-10 body_content">
+            <div class="tab-content" id="nav-tabContent">
+                <div class="tab-pane fade show active" id="list-yh" role="tabpanel" aria-labelledby="list-yh-list">
+                    <table class="table yh-table">
+                        <!-- jsrender -->
+                    </table>
+                </div>
+                <div class="tab-pane fade" id="list-zw" role="tabpanel" aria-labelledby="list-zw-list">
+                    <table class="table zw-table">
+                        <!-- jsrender -->
+                    </table>
+                </div>
+                <div class="tab-pane fade" id="list-zwlx" role="tabpanel" aria-labelledby="list-zwlx-list">
+                    <table class="table zwlx-table">
+                        <!-- jsrender -->
+                    </table>
+                </div>
+                <div class="tab-pane fade" id="list-jl" role="tabpanel" aria-labelledby="list-jl-list">
+                    <table class="table jl-table">
+                        <!-- jsrender -->
+                    </table>
+                </div>
+                <div class="tab-pane fade" id="list-ly" role="tabpanel" aria-labelledby="list-ly-list">
+                    <table class="table ly-table">
+                        <!-- jsrender -->
+                    </table>
+                </div>
+                <div class="tab-pane fade" id="list-gg" role="tabpanel" aria-labelledby="list-gg-list">
+                    <table class="table gg-table">
+                        <!-- jsrender -->
+                    </table>
+                </div>
+            </div>
+            <!-- 分页 -->
+            <div class="pagination justify-content-center"></div>
+            <!-- 删除  Modal 弹框 -->
+            <div class="modal fade" id="delModalCenter" tabindex="-1" role="dialog"
+                aria-labelledby="delModalCenterTitle" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content" style="color: #333">
+                        <div class="modal-header">
+                            <h4 class="modal-title" id="delModalCenterTitle">删除</h4>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <h2>是否确认删除？</h2>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-primary mr-2" data-dismiss="modal">取消</button>
+                            <button type="button" class="btn btn-primary" onclick="sureDel()">确认</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- 职位类型编辑/新增  Modal 弹框 -->
+            <div class="modal fade" id="updModalCenter" tabindex="-1" role="dialog"
+                aria-labelledby="updModalCenterTitle" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content" style="color: #333">
+                        <div class="modal-header">
+                            <h4 class="modal-title" id="updModalCenterTitle"></h4>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body upd-modal">
+                            <!-- jsrender -->
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-primary mr-2" data-dismiss="modal">取消</button>
+                            <button type="button" class="btn btn-primary" onclick="sureupd()">确认</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- 广告新增 Modal 弹框 -->
+            <div class="modal fade" id="addAdvModalCenter" tabindex="-1" role="dialog"
+                aria-labelledby="addAdvModalCenterTitle" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content" style="color: #333">
+                        <div class="modal-header">
+                            <h4 class="modal-title">新增广告</h4>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="pb-2">
+                                <span>上传广告图片：</span>
+                                <div>
+                                    <img src="" class="d-none" width="80" height="50" id="advImg">
+                                    <label class="uploadclass btn-outline-primary">+
+                                        <input type="file" onchange="uploadImg()" style="display: none;" />
+                                    </label>
+                                </div>
+                            </div>
+                            <div>
+                                <span>广告地址：</span>
+                                <input type="text" class="form-control advBaseUrl" placeholder="请输入广告地址http://"
+                                    style="width:100%" />
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-primary mr-2" data-dismiss="modal">取消</button>
+                            <button type="button" class="btn btn-primary" onclick="sureAddAdv()">确认</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script type="text/javascript" src="js/jquery.min.js"></script>
+    <script src="./iconfont/iconfont.js"></script>
+    <script src="./js/jquery-3.3.1.min.js"></script>
+    <script src="./js/common.js"></script>
+    <script src="./js/bootstrap.min.js"></script>
+    <script src="./js/jsrender.js"></script>
+    <script src="./js/pagination.js"></script>
+    <script src="./js/toastr.min.js"></script>
+    <script type="text/javascript">
+        var em, menuname; //全局变量
+        var page = 1,
+            pagesize = 15,
+            pageCount = 0;
+        $(function () {
+            var t = JSON.parse(sessionStorage.getItem('token'));
+            if (!isDataValid(t)) {
+                toastr.warning('请先登录！');
+                setTimeout(() => {
+                    window.location.href = document.URL.substring(0, document.URL
+                        .indexOf(
+                            '')) + 'login.html';
+                    return;
+                }, 1500)
+            }
+            var r = JSON.parse(sessionStorage.getItem('role'));
+            em = JSON.parse(sessionStorage.getItem('username')).split('用户')[1];
+            menuname = 'yh';
+            getTabList('yh'); //默认用户管理页面
+            $(".body_content").css('left', $(".body .body-menu").width() + 15);
+            $('.tab-content').css('min-height', $(window).height() - 120);
+            $('.list-group a').click(function (e) {
+                var v = e.currentTarget.hash.split('-')[1];
+                page = 1;
+                getTabList(v);
+                menuname = v;
+            });
+
+            $(window).resize(function () {
+                const w = $(".body .body-menu").width();
+                $(".body_content").css('left', w + 15);
+                $('.tab-content').css('min-height', $(window).height() - 120);
+            });
+        })
+
+        function getTabList(e) {
+            var url;
+            //管理员管理模块
+            if (e == 'yh') { //用户管理
+                url = httpUrl + '/admin/Userc/getuser';
+            }
+            if (e == 'zw') { //职位管理
+                url = httpUrl + '/admin/positionc/getposition';
+            }
+            if (e == 'zwlx') { //职位类型管理
+                url = httpUrl + '/admin/positionc/getpositionType';
+            }
+            if (e == 'jl') { //简历管理
+                url = httpUrl + '/admin/Resumec/getResume';
+            }
+            if (e == 'ly') { //留言管理
+                url = httpUrl + '/admin/liuyanc/getLiuyan';
+            }
+            if (e == 'gg') { //广告管理
+                url = httpUrl + '/admin/Advertisec/getAdver';
+            }
+            url += '/token/' + getToken() + '/page/' + page + '/pagesize/' + pagesize;
+            $.ajax({
+                type: 'get', //请求方式
+                url: url, //请求路径 
+                dataType: 'json',
+                contentType: 'application/x-www-form-urlencoded;charset=utf-8',
+                beforeSend: function (XMLHttpRequest) {},
+                success: function (data) { //成功
+                    if (data.resultcode >= 0) {
+                        if (isDataValid(data.data.list)) {
+                            var Classlists = data.data;
+                            obj = data.data.list;
+                            pageCount = Math.ceil(data.data.count / pagesize);
+                            e == 'yh' ? data.data.list.map((item, i) => {
+                                item['em'] = em;
+                            }) : '';
+                            e == 'zw' ? data.data.list.map((item, i) => {
+                                item['position_detailb'] = item['position_detail'].substring(0, 8);
+                                item['welfareb'] = item['welfare'].substring(0, 8);
+                            }) : '';
+                            var template1 = $.templates('#yhList');
+                            var template2 = $.templates('#zwList');
+                            var template3 = $.templates('#zwlxList');
+                            var template4 = $.templates('#jlList');
+                            var template5 = $.templates('#lyList');
+                            var template6 = $.templates('#ggList');
+
+                            $('.yh-table').html(template1.render(Classlists));
+                            $('.zw-table').html(template2.render(Classlists));
+                            $('.zwlx-table').html(template3.render(Classlists));
+                            $('.jl-table').html(template4.render(Classlists));
+                            $('.ly-table').html(template5.render(Classlists));
+                            $('.gg-table').html(template6.render(Classlists));
+
+                            // e == 'sdmsg' && data.data.count > 0 ? $('#getLyNumber').html(data.data.count) :
+                            //     '';
+                            $(".pagination").createPage({
+                                pageCount: pageCount,
+                                current: page,
+                                backFn: function (val) {
+                                    page = val;
+                                    getTabList(e);
+                                }
+                            });
+                            if (isDataValid(data.data.list) && data.data.list == 0) {
+                                $('.pagination').hide();
+                            } else {
+                                $('.pagination').show();
+                            }
+                        } else {}
+                    } else if (data.resultcode == -2) {
+                        reLogin(data);
+                    }
+                },
+                error: function (obj, msg, e) { //异常
+                    // console.log(msg);
+                }
+            });
+        }
+
+        var id; //全局变量
+
+        function del(e) {
+            id = e;
+        }
+        var obj;
+        var obj_list; //职位类型待编辑的数据对象
+        var index;
+        var isAdd = true;
+
+        function upd(i) {
+            isAdd = false;
+            $('#updModalCenterTitle').html('编辑');
+            obj_list = obj[i];
+            index = obj_list.chldren.length;
+            var template = $.templates('#zwlx-upd');
+            $('.upd-modal').html(template.render(obj_list));
+        }
+
+        function add() {
+            isAdd = true;
+            $('#updModalCenterTitle').html('新增');
+            var objData = {
+                'id': '',
+                'bigtype': '',
+                'chldren': [{
+                    'id': '',
+                    'smalltype': ''
+                }]
+            }
+            index = objData.chldren.length;
+            var template = $.templates('#zwlx-add');
+            $('.upd-modal').html(template.render(objData));
+        }
+        //确认删除
+        function sureDel() {
+            let url = httpUrl + '/admin';
+            if (menuname == 'yh') {
+                url += '/Userc/deluser/token/' + getToken()
+            }
+            if (menuname == 'zw') {
+                url += '/Positionc/delposition/token/' + getToken()
+            }
+            if (menuname == 'zwlx') {
+                url += '/positionc/delpositionType/token/' + getToken()
+            }
+            if (menuname == 'jl') {
+                url += '/Resumec/delResume/token/' + getToken()
+            }
+            if (menuname == 'ly') {
+                url += '/liuyanc/delLiuyan/token/' + getToken()
+            }
+            if (menuname == 'gg') {
+                url += '/Advertisec/delAdver/token/' + getToken()
+            }
+            let params = {
+                "id": id
+            };
+            // return;
+            // ajax请求
+            $.ajax({
+                type: 'POST', //请求方式
+                url: url, //请求路径 
+                data: JSON.stringify(params), //参数
+                dataType: 'JSON',
+                contentType: 'application/x-www-form-urlencoded;charset=utf-8',
+                beforeSend: function (XMLHttpRequest) {},
+                success: function (data) { //成功
+                    if (data.resultcode >= 0) {
+                        toastr.success(data.resultmsg)
+                        $('#delModalCenter').modal('hide');
+                        setTimeout(() => {
+                            getTabList(menuname);
+                        }, 100)
+
+                    } else if (data.resultcode == -2) {
+                        reLogin(data);
+                    } else {
+                        $('#delModalCenter').modal('hide');
+                        toastr.error(data.resultmsg)
+                    }
+                },
+                error: function (obj, msg, e) { //异常
+                    // toastr.error(data.msg)
+                }
+            });
+        }
+        //职位类型确认编辑
+        function sureupd() {
+            var arr = [],
+                url;
+            $('.smalltype label').each(function (e) {
+                arr.push({
+                    "id": $(this).find('input').attr('id').split('_')[2] ? $(this).find('input').attr(
+                        'id').split('_')[2] : '',
+                    "smalltype": $(this).find('input').val()
+                })
+            })
+            var params = {
+                'id': $('#bigName').attr('class') ? $('#bigName').attr('class') : '',
+                'bigtype': $('#bigName').val(),
+                'children': arr
+            }
+            if (!isDataValid(params.bigtype)) {
+                toastr.warning('大类不能为空');
+                return;
+            }
+            var index = params.children.findIndex((e) => {
+                return !isDataValid(e.smalltype)
+            });
+            if (index > -1) {
+                toastr.warning('小类不能为空');
+                return;
+            }
+            if (isAdd) {
+                url = httpUrl + '/admin/positionc/addpositionType/token/' + getToken();
+            } else {
+                url = httpUrl + '/admin/positionc/editpositionType/token/' + getToken();
+            }
+            // return;
+            // ajax请求
+            $.ajax({
+                type: 'POST', //请求方式
+                url: url, //请求路径 
+                data: JSON.stringify(params), //参数
+                dataType: 'JSON',
+                contentType: 'application/x-www-form-urlencoded;charset=utf-8',
+                beforeSend: function (XMLHttpRequest) {},
+                success: function (data) { //成功
+                    if (data.resultcode >= 0) {
+                        toastr.success(data.resultmsg)
+                        $('#updModalCenter').modal('hide');
+                        setTimeout(() => {
+                            getTabList(menuname);
+                        }, 100)
+
+                    } else if (data.resultcode == -2) {
+                        reLogin(data);
+                    } else {
+                        $('#updModalCenter').modal('hide');
+                        toastr.error(data.resultmsg)
+                    }
+                },
+                error: function (obj, msg, e) { //异常
+                    // toastr.error(data.msg)
+                }
+            });
+        }
+
+        //新增小类
+        function addSmall(i) {
+            var a = $(".smalltype label").last();
+            var dom = "<label class='label_" + index +
+                "'><input type='text' placeholder='输入小类' id='smallName_" + index +
+                "'><span class='badge badge-pill badge-secondary' style='margin-left: 4px;' data-toggle='tooltip' data-placement='right' title='移除小类' onclick='removeSmall(" +
+                index + ")'>X</span></label>"
+            a.length > 0 ? a.after(dom) : $(".smalltype span").before(dom); //追加label
+            index++;
+        }
+        //移除小类
+        function removeSmall(e) {
+            $(".smalltype .label_" + e).remove();
+        }
+
+        function addAdv() {
+            $('#advImg').addClass('d-none');
+            $('#advImg').attr('src', '');
+            $('.advBaseUrl').val('');
+        }
+        //确认发布广告
+        function sureAddAdv() {
+            var i = $('#advImg').attr('src');
+            if (!isDataValid(i)) {
+                toastr.warning('广告图片不能为空');
+                return;
+            }
+            var params = {
+                'url': i,
+                'advert_adress': $('.advBaseUrl').val()
+            }
+            // return;
+            let url = httpUrl + '/admin/Advertisec/addAdver/token/' + getToken();
+            // ajax请求
+            $.ajax({
+                type: 'POST', //请求方式
+                url: url, //请求路径 
+                data: JSON.stringify(params), //参数
+                dataType: 'JSON',
+                contentType: 'application/x-www-form-urlencoded;charset=utf-8',
+                beforeSend: function (XMLHttpRequest) {},
+                success: function (data) { //成功
+                    if (data.resultcode >= 0) {
+                        toastr.success(data.resultmsg)
+                        $('#addAdvModalCenter').modal('hide');
+                        setTimeout(() => {
+                            getTabList(menuname);
+                        }, 100)
+
+                    } else if (data.resultcode == -2) {
+                        reLogin(data);
+                    } else {
+                        $('#addAdvModalCenter').modal('hide');
+                        toastr.error(data.resultmsg)
+                    }
+                },
+                error: function (obj, msg, e) { //异常
+                    // toastr.error(data.msg)
+                }
+            });
+        }
+
+        // 上传头像文件
+        function uploadImg() {
+            var fileList = event.target.files;
+            var url = httpUrl + '/admin/Uploadc/upload';
+            if (fileList.length > 0) {
+                var file;
+                file = fileList[0];
+                // 通过FormData将文件转成二进制数据
+                let formData;
+                formData = new FormData();
+                formData.append('file', file, file.name);
+                // ajax请求
+                $.ajax({
+                    type: 'POST', //请求方式
+                    url: url, //请求路径 
+                    data: formData, //参数
+                    cache: false,
+                    processData: false,
+                    contentType: false,
+                    beforeSend: function (XMLHttpRequest) {},
+                    success: function (data) { //成功
+                        if (data.resultcode >= 0) {
+                            $('#advImg').attr('src', data.data.url);
+                            toastr.success('预览图片成功');
+                            $('#advImg').removeClass('d-none');
+                        } else {
+                            toastr.error('上传头像失败');
+                            $('#advImg').addClass('d-none');
+                            $('#advImg').attr('src', '');
+                        }
+                    },
+                    error: function (obj, msg, e) { //异常
+                        toastr.error('上传头像失败');
+                        $('#advImg').addClass('d-none');
+                        $('#advImg').attr('src', '');
+                    }
+                });
+            }
+        }
+    </script>
+
+    <!-- jsrender -->
+    <script id='yhList' type="text/x-jsrender">
+        <thead>
+            <tr>
+                {{for header}}
+                    <th>{{:headerName}}</th>
+                {{/for}}
+                <th>操作</th>
+            </tr>
+        </thead>
+        <tbody>
+            {{for list}}
+                <tr>
+                    <td>{{:email}}</td>
+                    <td>{{:nickname}}</td>
+                    <td>
+                        {{if header_img==null}}
+                        
+                        {{else}}
+                        <img src="{{:header_img}}" width='30' height='30'/>
+                        {{/if}}
+                    </td>
+                    <td>{{:sex}}</td>
+                    <td>{{:rolename}}</td>
+                    <td>{{:position}}</td>
+                    <td>{{:create_time}}</td>
+                    <td>
+                        {{if email==em}}
+                            <span>——</span>
+                        {{else}}
+                            <button type="button" class="btn-primary px-2" id='del' data-toggle="modal"
+                            data-target="#delModalCenter" onclick="del('{{:id}}')">删除</button>
+                        {{/if}}
+                    </td>
+                </tr>
+            {{/for}}
+        </tbody>
+    </script>
+    <script id='zwList' type="text/x-jsrender">
+        <thead>
+            <tr>
+                {{for header}}
+                    <th style="width:9%">{{:headerName}}</th>
+                {{/for}}
+                <th style="width:9%">操作</th>
+            </tr>
+        </thead>
+        <tbody>
+            {{for list}}
+                <tr>
+                    <td>{{>name}}</td>
+                    <td>{{>company_name}}</td>
+                    <td>{{:address}}</td>
+                    <td>{{:address_detail}}</td>
+                    <td>{{:industry}}</td>
+                    <td>{{:xueli}}</td>
+                    <td>{{:experience}}</td>
+                    <td>
+                        {{>position_detailb}}
+                        <a href="javascript:void(0)" data-toggle="tooltip" data-placement="bottom" 
+                         title="{{>position_detail}}">...</a>
+                    </td>
+                    <td>
+                        {{>welfareb}}
+                        <a href="javascript:void(0)" data-toggle="tooltip" data-placement="bottom" 
+                         title="{{>welfare}}">...</a>
+                    </td>
+                    <td>{{:create_time}}</td>
+                    <td>
+                        <button type="button" class="btn-primary px-2" id='del' data-toggle="modal"
+                            data-target="#delModalCenter" onclick="del('{{:id}}')">删除</button>
+                    </td>
+                </tr>
+            {{/for}}
+        </tbody>
+    </script>
+    <script id='zwlxList' type="text/x-jsrender">
+        <thead>
+            <tr>
+                {{for header}}
+                    <th>{{:headerName}}</th>
+                {{/for}}
+                <th>操作</th>
+            </tr>
+        </thead>
+        <tbody>
+            {{for list}}
+                <tr>
+                    <td> <span class="badge badge-primary">{{:bigtype}}</span></td>
+                    <td>
+                        {{for chldren}}
+                            <span class="badge badge-primary">{{:smalltype}}</span>
+                        {{/for}}
+                    </td>
+                    <td>
+                        <button type="button" class="btn-primary px-2" id='upd' data-toggle="modal"
+                            data-target="#updModalCenter" onclick="upd('{{:#getIndex()}}')">编辑</button>
+                        <button type="button" class="btn-primary px-2" id='del' data-toggle="modal"
+                            data-target="#delModalCenter" onclick="del('{{:id}}')">删除</button>
+                    </td>
+                </tr>
+            {{/for}}
+            <tr>
+                <td>新增一条职位类型</td>
+                <td></td>
+                <td>
+                    <button type="button" class="btn-primary px-2" id='upd' data-toggle="modal"
+                        data-target="#updModalCenter" onclick="add()">新增</button>
+                </td>
+            </tr>
+        </tbody>
+    </script>
+    <script id="zwlx-upd" type="text/x-jsrender">
+        <div class="d-flex justify-content-start ptype">
+            <span class="px-2">大类名称</span>
+            <label>
+                <input type="text" id="bigName" class="{{:id}}" placeholder="输入大类" value="{{:bigtype}}">
+            </label>
+        </div>
+        <div class="d-flex justify-content-start ptype">
+            <span class="px-2">小类名称</span>
+            <div class="d-flex justify-content-start align-items-center flex-column smalltype">
+                {{for chldren}}
+                    <label class="label_{{:#getIndex()}}">
+                        <input type="text" placeholder="输入小类" value="{{:smalltype}}" id="smallName_{{:#getIndex()}}_{{:id}}">
+                        <span class="badge badge-pill badge-secondary" data-toggle="tooltip"
+                            data-placement="right" title="移除小类" onclick="removeSmall('{{:#getIndex()}}')">X</span>
+                    </label>
+                {{/for}}
+                <span class="badge badge-pill badge-secondary c-cursor-p" data-toggle="tooltip"
+                    data-placement="right" title="新增小类" onclick="addSmall('{{:chldren.length}}')">➕</span>
+            </div>
+        </div>
+    </script>
+    <script id="zwlx-add" type="text/x-jsrender">
+        <div class="d-flex justify-content-start ptype">
+            <span class="px-2">大类名称</span>
+            <label>
+                <input type="text" id="bigName" placeholder="输入大类"">
+            </label>
+        </div>
+        <div class="d-flex justify-content-start ptype">
+            <span class="px-2">小类名称</span>
+            <div class="d-flex justify-content-start align-items-center flex-column smalltype">
+                {{for chldren}}
+                    <label class="label_{{:#getIndex()}}">
+                        <input type="text" placeholder="输入小类" value="{{:smalltype}}" id="smallName_{{:#getIndex()}}_{{:id}}">
+                        <span class="badge badge-pill badge-secondary" data-toggle="tooltip"
+                            data-placement="right" title="移除小类" onclick="removeSmall('{{:#getIndex()}}')">X</span>
+                    </label>
+                {{/for}}
+                <span class="badge badge-pill badge-secondary c-cursor-p" data-toggle="tooltip"
+                    data-placement="right" title="新增小类" onclick="addSmall('{{:chldren.length}}')">➕</span>
+            </div>
+        </div>
+    </script>
+    <script id='jlList' type="text/x-jsrender">
+        <thead>
+            <tr>
+                {{for header}}
+                    <th>{{:headerName}}</th>
+                {{/for}}
+                <th>操作</th>
+            </tr>
+        </thead>
+        <tbody>
+            {{for list}}
+                <tr>
+                    <td style="word-break:break-all">
+                        <span>简历（</span>
+                            <a href="{{:file_url}}">点击下载 </a>
+                        <span>）</span>     
+                    </td>
+                    <td>{{:nickname}}</td>
+                    <td>{{:email}}</td>
+                    <td>{{:create_time}}</td>
+                    <td>
+                        <button type="button" class="btn-primary px-2" id='del' data-toggle="modal"
+                            data-target="#delModalCenter" onclick="del('{{:id}}')">删除</button>
+                    </td>
+                </tr>
+            {{/for}}
+        </tbody>
+    </script>
+    <script id='lyList' type="text/x-jsrender">
+        <thead>
+            <tr>
+                {{for header}}
+                    <th>{{:headerName}}</th>
+                {{/for}}
+                <th>操作</th>
+            </tr>
+        </thead>
+        <tbody>
+            {{for list}}
+                <tr>
+                    <td>{{:nickname}}</td>
+                    <td>{{:email}}</td>
+                    <td>{{:name}}</td>
+                    <td>{{:liuyancontent}}</td>
+                    <td>{{:create_time}}</td>
+                    <td>
+                        <button type="button" class="btn-primary px-2" id='del' data-toggle="modal"
+                            data-target="#delModalCenter" onclick="del('{{:id}}')">删除</button>
+                    </td>
+                </tr>
+            {{/for}}
+        </tbody>
+    </script>
+    <script id='ggList' type="text/x-jsrender">
+        <thead>
+            <tr>
+                {{for header}}
+                    <th>{{:headerName}}</th>
+                {{/for}}
+                <th>操作</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>新增一条广告</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td>
+                    <button type="button" class="btn-primary px-2" id='addAdv' data-toggle="modal"
+                        data-target="#addAdvModalCenter" onclick="addAdv()">新增</button>
+                </td>
+            </tr>
+            {{for list}}
+                <tr>
+                    <td>
+                        <img src="{{:url}}" width='60' height='60'/>
+                    </td>
+                    <td>{{>create_user}}</td>
+                    <td>{{>create_time}}</td>
+                    <td>{{>address}}</td>
+                    <td>
+                        <button type="button" class="btn-primary px-2" id='del' data-toggle="modal"
+                            data-target="#delModalCenter" onclick="del('{{:id}}')">删除</button>
+                    </td>
+                </tr>
+            {{/for}}
+        </tbody>
+    </script>
+</body>
+
+</html>
