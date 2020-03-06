@@ -184,18 +184,6 @@ function getColumnName($tableName, $columnStr = '', $columnPrefix = '', $multipl
     return empty($columnName)?$columnStr:rtrim($columnName, ',');
 }
 
-//laravel dd函数
-function dd(...$args)
-{
-    foreach ($args as $x) {
-        $dumper=new HtmlDumper();
-        $cloner=new VarCloner();
-        $dumper->dump($cloner->cloneVar($x));
-    }
-
-    die(1);
-}
-
 //tp3 M()
 function M()
 {
