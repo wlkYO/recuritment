@@ -177,7 +177,7 @@ function getColumnName($tableName, $columnStr = '', $columnPrefix = '', $multipl
     if (!empty($columnStrArray)) {
         $coulumn=array();
         foreach ($columnStrArray as $k => $v) {
-            $coulumn[]=$columnArray[$v];
+            $coulumn[]=$columnArray[$v]; 
         }
         $columnName=implode(',', $coulumn);
     }
