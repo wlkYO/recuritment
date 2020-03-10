@@ -244,13 +244,9 @@ return [
         'list_rows' => 15,
     ],
 
-    //销售系统ip
-//    'sales_system_url' => 'http://172.16.15.88/',
-    'sales_system_url' => 'http://sales.wsy.me:8888/',
-    'appurl'           =>'http://luoxfkv.vaiwan.com',
-    'send_email' =>'1562656817@qq.com',
-    'send_mailpswd'=>'bcwmbabwahctigba',
-    'send_name'=>'本大爷',
-    'to_name' =>'你是猪',//设置收件人信息，如邮件格式说明中的收件人
-    'title'=>'这是一份测试邮件！'//邮件标题
+    'send_email' =>'1353831309@qq.com',
+    'send_mailpswd'=>'peafeazsjkbuibie',
+    'send_name'=>'Jinx的一发火箭来了',
+    'to_name' =>'姐姐验证码来了',//设置收件人信息，如邮件格式说明中的收件人
+    'title'=>'邮箱注册验证码信息！'//邮件标题
 ];

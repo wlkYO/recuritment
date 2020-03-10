@@ -41,7 +41,6 @@ class Webloginc
         $code = rand('100000','999999');        //六位随机数
         //收件人的邮箱
         $postData = json_decode(file_get_contents("php://input"), true);
-//        $postData = json_decode('{"email":"1551848357@qq.com"}', true);
         $email = $postData['email'];
         $regex= '/\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*/';
         $result = preg_match($regex,$email);
@@ -93,10 +92,8 @@ class Webloginc
         $mail->Subject = $title;     // 邮件标题
         session("code",$code);
         $mail->Body = $content;                 // 邮件正文
-        //$mail->AltBody = "This is the plain text纯文本";// 这个是设置纯文本方式显示的正文内容，如果不支持Html方式，就会用到这个，基本无用
         if(!$mail->send()){
             return array("resultcode" => -1, "resultmsg" => "操作失败！", "data" => null);//返回数据格式自己定义的一个函数
-
         }else{
             Cache::set('key',$code,60);//存储缓存
             return array("resultcode" => 1, "resultmsg" => "发送成功！", "data" => null);
